@@ -7,7 +7,7 @@ contributes:
     - name: RevealTabletChalkboard
       script:
         - plugin.js
-      stylesheet: ["font-awesome/css/all.css", "style.css"]
+      stylesheet: ["all.css", "style.css"]
       self-contained: false
       config:
         chalkboard:

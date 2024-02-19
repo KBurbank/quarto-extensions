@@ -13,8 +13,8 @@
  ** Compatibility with reveal.js v4 by Hakim El Hattab https://github.com/hakimel
  ******************************************************************/
 
-window.RevealChalkboard = window.RevealChalkboard || {
-	id: 'RevealChalkboard',
+window.RevealTabletChalkboard = window.RevealTabletChalkboard || {
+	id: 'RevealTabletChalkboard',
 	init: function ( deck ) {
 		initChalkboard( deck );
 	},
@@ -62,7 +62,7 @@ function scriptPath() {
 	if ( document.currentScript ) {
 		src = document.currentScript.src;
 	} else {
-		var sel = document.querySelector( 'script[src$="/chalkboard/plugin.js"]' )
+		var sel = document.querySelector( 'script[src$="/tablet-chalkboard/plugin.js"]' )
 		if ( sel ) {
 			src = sel.src;
 		}
@@ -215,7 +215,7 @@ const initChalkboard = function ( Reveal ) {
 	var readOnly = false;
 	var messageType = 'broadcast';
 
-	var config = configure( Reveal.getConfig().chalkboard || {} );
+	var config = configure( {} );
 	if ( config.keyBindings ) {
 		for ( var key in config.keyBindings ) {
 			keyBindings[ key ] = config.keyBindings[ key ];
@@ -223,6 +223,7 @@ const initChalkboard = function ( Reveal ) {
 	}
 
 	function configure( config ) {
+		config.chalkboard = true;
 
 		if ( config.boardmarkerWidth || config.penWidth ) boardmarkerWidth = config.boardmarkerWidth || config.penWidth;
 		if ( config.chalkWidth ) chalkWidth = config.chalkWidth;
@@ -319,7 +320,7 @@ console.warn( "toggleChalkboardButton is deprecated, use customcontrols plugin i
 		button.style.top = toggleChalkboardButton.top || "auto";
 		button.style.right = toggleChalkboardButton.right || "auto";
 
-		button.innerHTML = '<a href="#" title="Toggle chalkboard (' + keyBindings.toggleChalkboard.key + ')" onclick="RevealChalkboard.toggleChalkboard(); return false;"><i class="fa fa-pen-square"></i></a>'
+		button.innerHTML = '<a href="#" title="Toggle chalkboard (' + keyBindings.toggleChalkboard.key + ')" onclick="RevealTabletChalkboard.toggleChalkboard(); return false;"><i class="fa fa-pen-square"></i></a>'
 		document.querySelector( ".reveal" ).appendChild( button );
 	}
 	if ( toggleNotesButton ) {
@@ -337,7 +338,7 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 		button.style.top = toggleNotesButton.top || "auto";
 		button.style.right = toggleNotesButton.right || "auto";
 
-		button.innerHTML = '<a href="#" title="Toggle slide annotation (' + keyBindings.toggleNotesCanvas.key + ')" onclick="RevealChalkboard.toggleNotesCanvas(); return false;"><i class="fa fa-pen"></i></a>'
+		button.innerHTML = '<a href="#" title="Toggle slide annotation (' + keyBindings.toggleNotesCanvas.key + ')" onclick="RevealTabletChalkboard.toggleNotesCanvas(); return false;"><i class="fa fa-pen"></i></a>'
 		document.querySelector( ".reveal" ).appendChild( button );
 	}
 
@@ -2015,7 +2016,7 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 
 	for ( var key in keyBindings ) {
 		if ( keyBindings[ key ] ) {
-			Reveal.addKeyBinding( keyBindings[ key ], RevealChalkboard[ key ] );
+			Reveal.addKeyBinding( keyBindings[ key ], RevealTabletChalkboard[ key ] );
 		}
 	};
 
