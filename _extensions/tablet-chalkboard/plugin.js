@@ -1575,13 +1575,11 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 			// hide sponge image
 			drawingCanvas[ mode ].sponge.style.visibility = 'hidden';
 			stopDrawing();
-			if (the_x_diff < -50){
+			if (the_x_diff < -150){
 				Reveal.prev();
-			} else if (the_x_diff > 50){
+			} else if (the_x_diff > 150){
 				Reveal.next();
 			}
-			
-
 		}, false );
 
 
