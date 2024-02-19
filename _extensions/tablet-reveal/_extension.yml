@@ -9,6 +9,7 @@ contributes:
       post-render: fixnotes.py
     revealjs-plugins:
      - tablet-chalkboard
+      format: tablet-reveal
     format:
       revealjs:
         incremental: true
