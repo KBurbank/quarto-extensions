@@ -1472,7 +1472,7 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 		canvas.addEventListener( 'touchstart', function ( evt ) {
 			if (evt.touches[0].touchType === 'stylus' ){
 			evt.preventDefault();
-		                                   		
+			}                		
 		//	console.log("Touch start");
 			if ( !readOnly && evt.target.getAttribute( 'data-chalkboard' ) == mode ) {
 				var scale = drawingCanvas[ mode ].scale;
@@ -1486,7 +1486,7 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 				var yDown = touch.pageY;
 				startDrawing( ( mouseX - xOffset ) / scale, ( mouseY - yOffset ) / scale );
 				touchTimeout = setTimeout( startErasing, 500,  ( mouseX - xOffset ) / scale, ( mouseY - yOffset ) / scale );
-			}}
+			}
 		}, passiveSupported ? {
 			passive: false
 		} : false );
@@ -1575,10 +1575,10 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 			// hide sponge image
 			drawingCanvas[ mode ].sponge.style.visibility = 'hidden';
 			stopDrawing();
-			if (the_x_diff < -150){
-				Reveal.prev();
-			} else if (the_x_diff > 150){
+			if (the_x_diff > 150){
 				Reveal.next();
+			} else if (the_x_diff < -150){
+				Reveal.prev();
 			}
 		}, false );
 
