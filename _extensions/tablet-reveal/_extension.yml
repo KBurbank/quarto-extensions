@@ -1,0 +1,29 @@
+title: Tablet Reveal
+author: Kendra Burbank.
+version: 1.0.0
+
+contributes:
+  project:
+    project:
+      type: default
+      post-render: fixnotes.py
+    revealjs-plugins:
+     - tablet-chalkboard
+    format:
+      revealjs:
+        incremental: true
+        theme: sky
+        height: 800
+        center: false
+        number-sections: true
+        number-depth: 1
+        scrollable: true
+        smaller: true
+        margin-top: 3in
+        show-notes: true
+        slide-number: c
+        RevealTabletChalkboard:
+            theme: whiteboard
+        multiplex:
+            id: '088c3a9ce7c86f35'
+            secret: '17082113259002008212'
