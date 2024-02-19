@@ -260,7 +260,11 @@ const initChalkboard = function ( Reveal ) {
 		if ( config.background ) background = config.background;
 		if ( config.grid != undefined ) grid = config.grid;
 
+		config.toggleChalkboardButton=true;
+		config.toggleNotesButton=true;
+
 		if ( config.toggleChalkboardButton != undefined ) toggleChalkboardButton = config.toggleChalkboardButton;
+		
 		if ( config.toggleNotesButton != undefined ) toggleNotesButton = config.toggleNotesButton;
 		if ( config.colorButtons != undefined ) colorButtons = config.colorButtons;
 		if ( config.boardHandle != undefined ) boardHandle = config.boardHandle;
