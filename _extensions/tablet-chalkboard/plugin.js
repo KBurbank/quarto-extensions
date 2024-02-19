@@ -1428,6 +1428,11 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 		the_x_diff = xdiff;
 	}
 
+	function saveInitial(xdown,ydown) {
+		x_down = xdown;
+		y_down = ydown;
+
+	}
 
 	function drawSegment( fromX, fromY, toX, toY, colorIdx ) {
 		var ctx = drawingCanvas[ mode ].context;
@@ -1482,8 +1487,7 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 				var touch = evt.touches[ 0 ];
 				mouseX = touch.pageX;
 				mouseY = touch.pageY;
-				var xDown = touch.pageX;
-				var yDown = touch.pageY;
+				saveInitial(mouseX,mouseY)
 				startDrawing( ( mouseX - xOffset ) / scale, ( mouseY - yOffset ) / scale );
 				touchTimeout = setTimeout( startErasing, 500,  ( mouseX - xOffset ) / scale, ( mouseY - yOffset ) / scale );
 			}
@@ -1557,8 +1561,8 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 				var touch = evt.touches[ 0 ];
 				var xUp = touch.pageX;
 				var yUp = touch.pageY;
-				var xDiff = lastX - xUp;
-				var yDiff = lastY - yUp;
+				var xDiff = x_down - xUp;
+				var yDiff = y_down - yUp;
 				nonDrawSegment(xDiff);
 		//		console.log(xDiff)
 		//		console.log(yDiff)
