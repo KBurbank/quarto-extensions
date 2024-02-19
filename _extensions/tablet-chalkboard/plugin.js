@@ -1470,8 +1470,8 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 	function setupCanvasEvents( canvas ) {
 // TODO: check all touchevents
 		canvas.addEventListener( 'touchstart', function ( evt ) {
-			if (evt.touches[0].touchType === 'stylus' ){
-			evt.preventDefault();}
+			if (evt.touches[0].touchType === 'stylus' | evt.touches[length]>1){
+			evt.preventDefault();
 		                                   		
 		//	console.log("Touch start");
 			if ( !readOnly && evt.target.getAttribute( 'data-chalkboard' ) == mode ) {
@@ -1486,13 +1486,13 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 				var yDown = touch.pageY;
 				startDrawing( ( mouseX - xOffset ) / scale, ( mouseY - yOffset ) / scale );
 				touchTimeout = setTimeout( startErasing, 500,  ( mouseX - xOffset ) / scale, ( mouseY - yOffset ) / scale );
-			}
+			}}
 		}, passiveSupported ? {
 			passive: false
 		} : false );
 
 		canvas.addEventListener( 'touchmove', function ( evt ) {
-			if (evt.touches[0].touchType === 'stylus' ) {
+			if (evt.touches[0].touchType === 'stylus' | evt.touches.length > 1 ) {
 			evt.preventDefault();
 //console.log("Touch move");
 			clearTimeout( touchTimeout );
