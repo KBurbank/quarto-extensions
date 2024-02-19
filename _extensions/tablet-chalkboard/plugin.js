@@ -262,6 +262,8 @@ const initChalkboard = function ( Reveal ) {
 
 		config.toggleChalkboardButton=true;
 		config.toggleNotesButton=true;
+		config.colorButtons=true;
+		config.boardHandle=true;
 
 		if ( config.toggleChalkboardButton != undefined ) toggleChalkboardButton = config.toggleChalkboardButton;
 		
