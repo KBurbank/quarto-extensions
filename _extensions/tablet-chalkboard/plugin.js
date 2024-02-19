@@ -1470,7 +1470,7 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 	function setupCanvasEvents( canvas ) {
 // TODO: check all touchevents
 		canvas.addEventListener( 'touchstart', function ( evt ) {
-			if (evt.touches[0].touchType === 'stylus' | evt.touches[length]>1){
+			if (evt.touches[0].touchType === 'stylus' ){
 			evt.preventDefault();
 		                                   		
 		//	console.log("Touch start");
@@ -1492,17 +1492,19 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 		} : false );
 
 		canvas.addEventListener( 'touchmove', function ( evt ) {
-			if (evt.touches[0].touchType === 'stylus' | evt.touches.length > 1 ) {
+			if (evt.touches[0].touchType === 'stylus' ) {
 			evt.preventDefault();
 //console.log("Touch move");
+			var touch = evt.touches[ 0 ];
+			if (((lastX-touch.pageX)*(lastX-touch.pageX)+(lastY-touch.pageY)*(lastY-touch.pageY))>100){
 			clearTimeout( touchTimeout );
-			touchTimeout = null;
+			touchTimeout = null;}
 			if ( drawing || erasing ) {
 				var scale = drawingCanvas[ mode ].scale;
 				var xOffset = drawingCanvas[ mode ].xOffset;
 				var yOffset = drawingCanvas[ mode ].yOffset;
 
-				var touch = evt.touches[ 0 ];
+				
 				mouseX = touch.pageX;
 				mouseY = touch.pageY;
 				if ( mouseY < drawingCanvas[ mode ].height && mouseX < drawingCanvas[ mode ].width ) {
