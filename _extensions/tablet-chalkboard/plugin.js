@@ -204,7 +204,7 @@ const initChalkboard = function ( Reveal ) {
 	};
 
 
-	var theme = 'chalkboard';
+	var theme = 'whiteboard';
 	var color = [ 0, 0 ];
 	var toggleChalkboardButton = false;
 	var toggleNotesButton = false;
