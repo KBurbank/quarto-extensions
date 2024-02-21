@@ -13,6 +13,8 @@
  ** Compatibility with reveal.js v4 by Hakim El Hattab https://github.com/hakimel
  ******************************************************************/
 
+ /* Only works if the fontawesome extension is installed and used at least once */
+
 window.RevealTabletChalkboard = window.RevealTabletChalkboard || {
 	id: 'RevealTabletChalkboard',
 	init: function ( deck ) {
@@ -110,7 +112,7 @@ const initChalkboard = function ( Reveal ) {
 		},
 		{
 			color: 'rgba(220,20,60,1)',
-			cursor: 'url(' + path + 'img/boardmarker-red.png), auto'
+			cursor: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1em' height='1em' viewBox='0 0 24 24'%3E%3Cpath fill='%23e32400' d='m6.8 21.4l-.95-.95L3.6 22.7l-2.25-2.35l2.2-2.2l-.95-1L17.175 2.575l4.25 4.25zm4.3-9.9l-5.7 5.65l1.45 1.45l5.65-5.7z'/%3E%3C/svg%3E"), auto`
 		},
 		{
 			color: 'rgba(50,205,50,1)',
