@@ -328,7 +328,7 @@ console.warn( "toggleChalkboardButton is deprecated, use customcontrols plugin i
 		button.style.top = toggleChalkboardButton.top || "auto";
 		button.style.right = toggleChalkboardButton.right || "auto";
 
-		button.innerHTML = '<a href="#" title="Toggle chalkboard (' + keyBindings.toggleChalkboard.key + ')" onclick="RevealTabletChalkboard.toggleChalkboard(); return false;"><i>C</i></a>'
+		button.innerHTML = '<a href="#" title="Toggle chalkboard (' + keyBindings.toggleChalkboard.key + ')" onclick="RevealTabletChalkboard.toggleChalkboard(); return false;"><i class="fa fa-pen-square"></i></a>'
 		document.querySelector( ".reveal" ).appendChild( button );
 	}
 	if ( toggleNotesButton ) {

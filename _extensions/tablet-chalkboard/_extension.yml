@@ -6,8 +6,8 @@ contributes:
   revealjs-plugins:
     - name: RevealTabletChalkboard
       script:
-        - ["plugin.js","fontawesome.min.js","solid.min.js"]
-      stylesheet: ["font-awesome/css/all.css", "style.css"]
+        - "plugin.js"
+      stylesheet: ["style.css"]
       self-contained: false
       config:
         chalkboard:
