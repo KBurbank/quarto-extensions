@@ -328,7 +328,7 @@ console.warn( "toggleChalkboardButton is deprecated, use customcontrols plugin i
 		button.style.top = toggleChalkboardButton.top || "auto";
 		button.style.right = toggleChalkboardButton.right || "auto";
 
-		button.innerHTML = '<a href="#" title="Toggle chalkboard (' + keyBindings.toggleChalkboard.key + ')" onclick="RevealTabletChalkboard.toggleChalkboard(); return false;"><i class="fa fa-pen-square"></i></a>'
+		button.innerHTML = '<a href="#" title="Toggle chalkboard (' + keyBindings.toggleChalkboard.key + ')" onclick="RevealTabletChalkboard.toggleChalkboard(); return false;"><i class="fa fa-pencil"></i></a>'
 		document.querySelector( ".reveal" ).appendChild( button );
 	}
 	if ( toggleNotesButton ) {
@@ -346,7 +346,7 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 		button.style.top = toggleNotesButton.top || "auto";
 		button.style.right = toggleNotesButton.right || "auto";
 
-		button.innerHTML = '<a href="#" title="Toggle slide annotation (' + keyBindings.toggleNotesCanvas.key + ')" onclick="RevealTabletChalkboard.toggleNotesCanvas(); return false;"><i class="fa fa-pen"></i></a>'
+		button.innerHTML = '<a href="#" title="Toggle slide annotation (' + keyBindings.toggleNotesCanvas.key + ')" onclick="RevealTabletChalkboard.toggleNotesCanvas(); return false;"><i class="fa fa-pencil"></i></a>'
 		document.querySelector( ".reveal" ).appendChild( button );
 	}
 
