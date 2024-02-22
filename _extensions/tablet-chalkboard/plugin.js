@@ -321,14 +321,14 @@ console.warn( "toggleChalkboardButton is deprecated, use customcontrols plugin i
 		button.style.visibility = "visible";
 		button.style.position = "absolute";
 		button.style.zIndex = 30;
-		button.style.fontSize = "24px";
+		button.style.fontSize = "30px";
 
-		button.style.left = toggleChalkboardButton.left || "30px";
-		button.style.bottom = toggleChalkboardButton.bottom || "30px";
+		button.style.left = toggleChalkboardButton.left || "45px";
+		button.style.bottom = toggleChalkboardButton.bottom || "3px";
 		button.style.top = toggleChalkboardButton.top || "auto";
 		button.style.right = toggleChalkboardButton.right || "auto";
 
-		button.innerHTML = '<a href="#" title="Toggle chalkboard (' + keyBindings.toggleChalkboard.key + ')" onclick="RevealTabletChalkboard.toggleChalkboard(); return false;"><i class="fa fa-pencil"></i></a>'
+		button.innerHTML = '<a href="#" title="Toggle chalkboard (' + keyBindings.toggleChalkboard.key + ')" onclick="RevealTabletChalkboard.toggleChalkboard(); return false;"><i></i><svg aria-hidden="true" focusable="false" class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 612" width="1em" height="1em"><!-- Font Awesome Free 5.15.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path fill="#86878f" d="M96 32C60.7 32 32 60.7 32 96V384H96V96l384 0V384h64V96c0-35.3-28.7-64-64-64H96zM224 384v32H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H544c17.7 0 32-14.3 32-32s-14.3-32-32-32H416V384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32z"/></svg></a>'
 		document.querySelector( ".reveal" ).appendChild( button );
 	}
 	if ( toggleNotesButton ) {
@@ -339,14 +339,15 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 		button.id = "toggle-notes";
 		button.style.position = "absolute";
 		button.style.zIndex = 30;
-		button.style.fontSize = "24px";
+		button.style.fontSize = "20px";
+		button.style.color = "gray";
 
-		button.style.left = toggleNotesButton.left || "70px";
-		button.style.bottom = toggleNotesButton.bottom || "30px";
+		button.style.left = toggleNotesButton.left || "80px";
+		button.style.bottom = toggleNotesButton.bottom || "12px";
 		button.style.top = toggleNotesButton.top || "auto";
 		button.style.right = toggleNotesButton.right || "auto";
 
-		button.innerHTML = '<a href="#" title="Toggle slide annotation (' + keyBindings.toggleNotesCanvas.key + ')" onclick="RevealTabletChalkboard.toggleNotesCanvas(); return false;"><i class="fa fa-pencil"></i></a>'
+		button.innerHTML = '<a href="#" title="Toggle slide annotation (' + keyBindings.toggleNotesCanvas.key + ')" onclick="RevealTabletChalkboard.toggleNotesCanvas(); return false;"><i></i><svg aria-hidden="true" focusable="false" class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="1em" height="1em"><!-- Font Awesome Free 5.15.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) --><path fill="#86878f" d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/></svg></a>';
 		document.querySelector( ".reveal" ).appendChild( button );
 	}
 
