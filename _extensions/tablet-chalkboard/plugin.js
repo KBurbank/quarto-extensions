@@ -442,11 +442,19 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 		}
 		container.style.cursor = pens[ id ][ color[ id ] ].cursor;
 
-		drawingCanvas[ id ].width = window.innerWidth;
-		drawingCanvas[ id ].height = window.innerHeight;
-		drawingCanvas[ id ].scale = 1;
-		drawingCanvas[ id ].xOffset = 0;
-		drawingCanvas[ id ].yOffset = 0;
+		var revealDiv = document.querySelector('.reveal');
+
+		drawingCanvas[id].width = revealDiv.clientWidth;
+		drawingCanvas[id].height = revealDiv.clientHeight;
+		drawingCanvas[id].scale = 1;
+		drawingCanvas[id].xOffset = revealDiv.offsetLeft;
+		drawingCanvas[id].yOffset = revealDiv.offsetTop;
+
+	//	drawingCanvas[ id ].width = window.innerWidth;
+	//	drawingCanvas[ id ].height = window.innerHeight;
+	//	drawingCanvas[ id ].scale = 1;
+	//	drawingCanvas[ id ].xOffset = 0;
+	//	drawingCanvas[ id ].yOffset = 0;
 
 		if ( id == "0" ) {
 			container.style.background = 'rgba(0,0,0,0)';
@@ -458,9 +466,9 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 			var slides = document.querySelector( '.slides' );
 			var aspectRatio = Reveal.getConfig().width / Reveal.getConfig().height;
 			if ( drawingCanvas[ id ].width > drawingCanvas[ id ].height * aspectRatio ) {
-				drawingCanvas[ id ].xOffset = ( drawingCanvas[ id ].width - drawingCanvas[ id ].height * aspectRatio ) / 2;
+				drawingCanvas[ id ].xOffset = ( drawingCanvas[ id ].width - drawingCanvas[ id ].height * aspectRatio ) / 2 - revealDiv.offsetLeft;
 			} else if ( drawingCanvas[ id ].height > drawingCanvas[ id ].width / aspectRatio ) {
-				drawingCanvas[ id ].yOffset = ( drawingCanvas[ id ].height - drawingCanvas[ id ].width / aspectRatio ) / 2;
+				drawingCanvas[ id ].yOffset = ( drawingCanvas[ id ].height - drawingCanvas[ id ].width / aspectRatio ) / 2 - revealDiv.offsetTop;
 			}
 
 			if ( colorButtons ) {
@@ -561,14 +569,15 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 	 * Initialize storage.
 	 */
 	function initStorage( json ) {
+		var revealDiv = document.querySelector('.reveal');
 		var success = false;
 		try {
 			var data = JSON.parse( json );
 			for ( var id = 0; id < data.length; id++ ) {
 				if ( drawingCanvas[ id ].width != data[ id ].width || drawingCanvas[ id ].height != data[ id ].height ) {
 					drawingCanvas[ id ].scale = Math.min( drawingCanvas[ id ].width / data[ id ].width, drawingCanvas[ id ].height / data[ id ].height );
-					drawingCanvas[ id ].xOffset = ( drawingCanvas[ id ].width - data[ id ].width * drawingCanvas[ id ].scale ) / 2;
-					drawingCanvas[ id ].yOffset = ( drawingCanvas[ id ].height - data[ id ].height * drawingCanvas[ id ].scale ) / 2;
+					drawingCanvas[ id ].xOffset = ( drawingCanvas[ id ].width - data[ id ].width * drawingCanvas[ id ].scale ) / 2 ;
+					drawingCanvas[ id ].yOffset = ( drawingCanvas[ id ].height - data[ id ].height * drawingCanvas[ id ].scale ) / 2 ;
 				}
 				if ( config.readOnly ) {
 					drawingCanvas[ id ].container.style.cursor = 'default';
@@ -835,13 +844,14 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 	function createDrawings( slideData, patImg ) {
 		var width = Reveal.getConfig().width;
 		var height = Reveal.getConfig().height;
+		var revealDiv = document.querySelector('.reveal');
 		var scale = 1;
 		var xOffset = 0;
 		var yOffset = 0;
 		if ( width != storage[ 1 ].width || height != storage[ 1 ].height ) {
 			scale = Math.min( width / storage[ 1 ].width, height / storage[ 1 ].height );
-			xOffset = ( width - storage[ 1 ].width * scale ) / 2;
-			yOffset = ( height - storage[ 1 ].height * scale ) / 2;
+			xOffset = ( width - storage[ 1 ].width * scale ) / 2 ;
+			yOffset = ( height - storage[ 1 ].height * scale ) / 2 ;
 		}
 		mode = 1;
 		board = 0;
@@ -1011,6 +1021,7 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 	 * Draw grid on background
 	 */
 	function drawGrid() {
+		var revealDiv = document.querySelector('.reveal');
 		var context = drawingCanvas[ 1 ].context;
 
 		drawingCanvas[ 1 ].scale = Math.min( drawingCanvas[ 1 ].width / storage[ 1 ].width, drawingCanvas[ 1 ].height / storage[ 1 ].height );
@@ -1050,9 +1061,9 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 
 	function redrawGrid( centerX, centerY, diameter ) {
 		var context = drawingCanvas[ 1 ].context;
-
+		var revealDiv = document.querySelector('.reveal');
 		drawingCanvas[ 1 ].scale = Math.min( drawingCanvas[ 1 ].width / storage[ 1 ].width, drawingCanvas[ 1 ].height / storage[ 1 ].height );
-		drawingCanvas[ 1 ].xOffset = ( drawingCanvas[ 1 ].width - storage[ 1 ].width * drawingCanvas[ 1 ].scale ) / 2;
+		drawingCanvas[ 1 ].xOffset = ( drawingCanvas[ 1 ].width - storage[ 1 ].width * drawingCanvas[ 1 ].scale ) / 2 ;
 		drawingCanvas[ 1 ].yOffset = ( drawingCanvas[ 1 ].height - storage[ 1 ].height * drawingCanvas[ 1 ].scale ) / 2;
 
 		var scale = drawingCanvas[ 1 ].scale;
@@ -1200,6 +1211,7 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 			break;
 		case 'init':
 			storage = message.content.storage;
+			var revealDiv = document.querySelector('.reveal');
 			for ( var id = 0; id < 2; id++ ) {
 				drawingCanvas[ id ].scale = Math.min( drawingCanvas[ id ].width / storage[ id ].width, drawingCanvas[ id ].height / storage[ id ].height );
 				drawingCanvas[ id ].xOffset = ( drawingCanvas[ id ].width - storage[ id ].width * drawingCanvas[ id ].scale ) / 2;
@@ -1476,6 +1488,8 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
  ******************************************************************/
 
 	function setupCanvasEvents( canvas ) {
+		var revealDiv = document.querySelector('.reveal');
+
 // TODO: check all touchevents
 		canvas.addEventListener( 'touchstart', function ( evt ) {
 			if (evt.touches[0].touchType === 'stylus' ){
@@ -1488,10 +1502,10 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 				var yOffset = drawingCanvas[ mode ].yOffset;
 
 				var touch = evt.touches[ 0 ];
-				mouseX = touch.pageX;
-				mouseY = touch.pageY;
+				mouseX = touch.pageX-revealDiv.offsetLeft;
+				mouseY = touch.pageY- revealDiv.offsetTop;
 				saveInitial(mouseX,mouseY)
-				startDrawing( ( mouseX - xOffset ) / scale, ( mouseY - yOffset ) / scale );
+				startDrawing( ( mouseX - xOffset ) / scale, ( mouseY - yOffset ) / scale  );
 				touchTimeout = setTimeout( startErasing, 500,  ( mouseX - xOffset ) / scale, ( mouseY - yOffset ) / scale );
 			}
 		}, passiveSupported ? {
@@ -1503,7 +1517,7 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 			evt.preventDefault();
 //console.log("Touch move");
 			var touch = evt.touches[ 0 ];
-			if (((lastX-touch.pageX)*(lastX-touch.pageX)+(lastY-touch.pageY)*(lastY-touch.pageY))>50){
+			if (((lastX-touch.pageX-revealDiv.offsetLeft)*(lastX-touch.pageX-revealDiv.offsetLeft)+(lastY-touch.pageY-revealDiv.offsetTop)*(lastY-touch.pageY-revealDiv.offsetTop))>50){
 			clearTimeout( touchTimeout );
 			touchTimeout = null;}
 			if ( drawing || erasing ) {
@@ -1512,8 +1526,8 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 				var yOffset = drawingCanvas[ mode ].yOffset;
 
 				
-				mouseX = touch.pageX;
-				mouseY = touch.pageY;
+				mouseX = touch.pageX - revealDiv.offsetLeft;
+				mouseY = touch.pageY - revealDiv.offsetTop;
 				if ( mouseY < drawingCanvas[ mode ].height && mouseX < drawingCanvas[ mode ].width ) {
 					// move sponge
 					if ( event.type == 'erase' ) {
@@ -1562,8 +1576,8 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 				nonDrawSegment(0);
 			} else {
 				var touch = evt.touches[ 0 ];
-				var xUp = touch.pageX;
-				var yUp = touch.pageY;
+				var xUp = touch.pageX - revealDiv.offsetTop;
+				var yUp = touch.pageY - revealDiv.offsetTop;
 				var xDiff = x_down - xUp;
 				var yDiff = y_down - yUp;
 				nonDrawSegment(xDiff);
@@ -1606,8 +1620,8 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 				var xOffset = drawingCanvas[ mode ].xOffset;
 				var yOffset = drawingCanvas[ mode ].yOffset;
 
-				mouseX = evt.pageX;
-				mouseY = evt.pageY;
+				mouseX = evt.pageX-revealDiv.offsetLeft;
+				mouseY = evt.pageY-revealDiv.offsetTop;
 
 				if ( evt.button == 2 || evt.button == 1 ) {
 					startErasing( ( mouseX - xOffset ) / scale, ( mouseY - yOffset ) / scale );
@@ -1620,11 +1634,11 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 						mode,
 						board,
 						x: ( mouseX - xOffset ) / scale,
-						y: ( mouseY - yOffset ) / scale
+						y: ( mouseY - yOffset ) / scale 
 					};
 					document.dispatchEvent( message );
 				} else {
-					startDrawing( ( mouseX - xOffset ) / scale, ( mouseY - yOffset ) / scale );
+					startDrawing( ( mouseX - xOffset ) / scale, ( mouseY - yOffset ) / scale  );
 				}
 			}
 		} );
@@ -1637,11 +1651,11 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 				var xOffset = drawingCanvas[ mode ].xOffset;
 				var yOffset = drawingCanvas[ mode ].yOffset;
 
-				mouseX = evt.pageX;
-				mouseY = evt.pageY;
+				mouseX = evt.pageX-revealDiv.offsetLeft;
+				mouseY = evt.pageY-revealDiv.offsetTop;
 
 				if ( drawing ) {
-					drawSegment( ( lastX - xOffset ) / scale, ( lastY - yOffset ) / scale, ( mouseX - xOffset ) / scale, ( mouseY - yOffset ) / scale, color[ mode ] );
+					drawSegment( ( lastX - xOffset ) / scale, ( lastY - yOffset ) / scale, ( mouseX - xOffset ) / scale, ( mouseY - yOffset) / scale, color[ mode ] );
 					// broadcast
 					var message = new CustomEvent( messageType );
 					message.content = {
@@ -1651,7 +1665,7 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 						mode,
 						board,
 						fromX: ( lastX - xOffset ) / scale,
-						fromY: ( lastY - yOffset ) / scale,
+						fromY: ( lastY - yOffset ) / scale ,
 						toX: ( mouseX - xOffset ) / scale,
 						toY: ( mouseY - yOffset ) / scale,
 						color: color[ mode ]
