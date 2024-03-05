@@ -1517,7 +1517,7 @@ console.warn( "toggleNotesButton is deprecated, use customcontrols plugin instea
 			evt.preventDefault();
 //console.log("Touch move");
 			var touch = evt.touches[ 0 ];
-			if (((lastX-touch.pageX-revealDiv.offsetLeft)*(lastX-touch.pageX-revealDiv.offsetLeft)+(lastY-touch.pageY-revealDiv.offsetTop)*(lastY-touch.pageY-revealDiv.offsetTop))>50){
+			if (((lastX-touch.pageX+revealDiv.offsetLeft)*(lastX-touch.pageX+revealDiv.offsetLeft)+(lastY-touch.pageY+revealDiv.offsetTop)*(lastY-touch.pageY+revealDiv.offsetTop))>50){
 			clearTimeout( touchTimeout );
 			touchTimeout = null;}
 			if ( drawing || erasing ) {
