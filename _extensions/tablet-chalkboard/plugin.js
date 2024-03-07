@@ -102,7 +102,12 @@ const initChalkboard = function (Reveal) {
 		src: "",
 		radius: 20
 	};
-	var boardmarkers = [{
+	var boardmarkers = [
+		{
+			color: 'rgba(220,20,60,1)',
+			cursor: ""
+		},
+		{
 		color: 'rgba(100,100,100,1)',
 		cursor: ""
 	},
@@ -110,10 +115,7 @@ const initChalkboard = function (Reveal) {
 		color: 'rgba(30,144,255, 1)',
 		cursor: ""
 	},
-	{
-		color: 'rgba(220,20,60,1)',
-		cursor: ""
-	},
+	
 	{
 		color: 'rgba(50,205,50,1)',
 		cursor: ""
@@ -708,8 +710,60 @@ const initChalkboard = function (Reveal) {
 	}
 
 	/**
+	 * Returns data object for the slide with the given indices, including events from all fragments before and up to the current one.
+	 */
+
+	function getSlideDataRange(indices, id, timeInterval) {
+		if (id == undefined) id = mode;
+		if (!indices) indices = slideIndices;
+	
+		var beforeEvents = storage[id].data
+			.filter(item => 
+				item.slide.h === indices.h && 
+				item.slide.v === indices.v && 
+				item.slide.f >= -1 && item.slide.f <= indices.f
+				)
+			.reduce((acc, item) => acc.concat(item.events.filter(event =>  event.time < timeInterval)), []);
+		var eraseEvents = storage[id].data
+		.filter(item => 
+			item.slide.h === indices.h && 
+			item.slide.v === indices.v 
+			)
+		.reduce((acc, item) => acc.concat(item.events.filter(event =>  event.time < timeInterval&&event.type==='erase')), []);
+	
+		var combinedEvents = Array.from(new Set(beforeEvents.concat(eraseEvents)));
+
+		var data = storage[id].data.find(item => 
+			item.slide.h === indices.h && 
+			item.slide.v === indices.v && 
+			item.slide.f === indices.f
+		);
+	
+		if (data) {
+			data = {...data, events: combinedEvents};
+		} else {
+			var page = Number(Reveal.getCurrentSlide().getAttribute('data-pdf-page-number'));
+			//console.log( indices, Reveal.getCurrentSlide() );
+			storage[id].data.push({
+				slide: indices,
+				page,
+				events: [],
+				duration: 0
+			});
+			data = storage[id].data[storage[id].data.length - 1];
+			data = {...data, events: combinedEvents};
+		}
+	
+		return data;
+	}
+
+
+	/**
 	 * Returns data object for the slide with the given indices.
 	 */
+
+
+
 	function getSlideData(indices, id) {
 		if (id == undefined) id = mode;
 		if (!indices) indices = slideIndices;
@@ -1130,23 +1184,13 @@ const initChalkboard = function (Reveal) {
 
 	function redrawChalkboard(boardIdx) {
 		clearCanvas(1);
-		let idx = { ...slideIndices, f: -1 };
-		var origSlideData = getSlideData(idx, 1);
+		let timeInterval = Date.now() - slideStart
+		var slideData = getSlideDataRange(slideIndices,boardIdx,timeInterval)
+		slideData.events.sort((a, b) => (a.type === 'erase') - (b.type === 'erase'));
 
-		for (let i = slideIndices.f; i >= -1; i--) {
-			let idx = { ...slideIndices, f: i };
-
-			var slideData = getSlideData(idx, 1);
-			var index = 0;
-			var play = (boardIdx == 0);
-			while (index < slideData.events.length && origSlideData.events[index].time < Date.now() - slideStart) {
-				if (boardIdx == slideData.events[index].board) {
-					playEvent(1, slideData.events[index], Date.now() - slideStart);
-				}
-
-				index++;
-			}
-		}
+		slideData.events.forEach(thisEvent => {
+			playEvent(boardIdx,thisEvent, timeInterval);
+		});
 	}
 
 
@@ -1319,46 +1363,22 @@ const initChalkboard = function (Reveal) {
 		for (var id = 0; id < 2; id++) {
 			clearCanvas(id);
 
-			// for values of i between slideIndices.f and -1, let dx = { ...slideIndices, f: i }, find slideData = getSlideData(idx,id) and calculate
-			// the minimum value of slideData.events[0].time
+	
+		var slideData = getSlideDataRange(slideIndices,id,slideStart);
+	
+		slideData.events.forEach(thisEvent => {
+			playEvent(id,thisEvent, timestamp);
+	//	timeouts[id].push(setTimeout(playEvent,0, id, thisEvent, timestamp));
+		});
 
-			// var times = Array.from({ length: slideIndices.f + 2 }, (_, i) => slideIndices.f - i)
-			// 	.map(i => {
-			// 		let idx = { ...slideIndices, f: i };
-			// 		let slideData = getSlideData(idx, id);
-			// 		console.log(slideData)
-			// 		return slideData.events.length > 0 ? slideData.events[0].time : 0;
-			// 	});
-
-			// var minTime = Math.min(...times);
-		
-		//	console.log(times)
-			for (let i = slideIndices.f; i >= -1; i--) {
-				let idx = { ...slideIndices, f: i };
-
-				var slideData = getSlideData(idx, id);
-//				console.log(slideData)
-				var index = 0;
-//				while (index < slideData.events.length && minTime < (Date.now() - slideStart)) {
-				while (index < slideData.events.length ) {
-
-playEvent(id, slideData.events[index], timestamp);
-					index++;
-				}
-
-				while (playback && index < slideData.events.length) {
-					timeouts[id].push(setTimeout(playEvent, slideData.events[index].time - (Date.now() - slideStart), id, slideData.events[index], timestamp));
-					index++;
-				}
-			}
-		}
+			
 		//console.log("Mode: " + finalMode + "/" + mode );
 		if (finalMode != undefined) {
 			mode = finalMode;
 		}
 		if (mode == 1) showChalkboard();
 		//console.log("playback (ok)");
-
+	}
 	};
 
 	function stopPlayback() {
