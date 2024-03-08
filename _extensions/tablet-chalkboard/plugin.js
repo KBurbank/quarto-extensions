@@ -387,12 +387,20 @@ const initChalkboard = function (Reveal) {
 	var updateStorageTimeout = null;
 	var playback = false;
 
-	function createPalette(colors, length) {
+	function createPalette(colors, length,id) {
+		var revealFooter = document.querySelector('.reveal-footer')
+
+		if (!revealFooter) {
+			revealFooter = revealDiv;
+		}
 		if (length === true || length > colors.length) {
 			length = colors.length;
 		}
-		var palette = document.createElement('div');
+
+		var palette = document.createElement('div')
+		revealFooter.appendChild(palette);
 		palette.classList.add('palette');
+		palette.classList.add('id'+id)
 		var list = document.createElement('ul');
 		// color pickers
 		for (var i = 0; i < length; i++) {
@@ -445,6 +453,8 @@ const initChalkboard = function (Reveal) {
 
 
 		var revealDiv = document.querySelector('.reveal');
+		
+
 
 		drawingCanvas[id].width = revealDiv.clientWidth;
 		drawingCanvas[id].height = revealDiv.clientHeight;
@@ -474,9 +484,10 @@ const initChalkboard = function (Reveal) {
 			}
 
 			if (colorButtons) {
-				var palette = createPalette(boardmarkers, colorButtons);
+				var palette = createPalette(boardmarkers, colorButtons,id);
 				palette.style.visibility = 'hidden'; // only show palette in drawing mode
-				container.appendChild(palette);
+				palette.style.display = 'none';
+			//	container.appendChild(palette);
 			}
 		} else {
 			container.style.background = 'url("' + background[id] + '") repeat';
@@ -485,8 +496,10 @@ const initChalkboard = function (Reveal) {
 			container.style.visibility = 'hidden';
 
 			if (colorButtons) {
-				var palette = createPalette(chalks, colorButtons);
-				container.appendChild(palette);
+				var palette = createPalette(chalks, colorButtons,id);
+			//	container.appendChild(palette);
+			palette.style.visibility='hidden'
+			palette.style.display='block'
 			}
 			if (boardHandle) {
 				var handle = document.createElement('div');
@@ -1896,7 +1909,8 @@ const initChalkboard = function (Reveal) {
 				if (notescanvas.style.pointerEvents != 'none') {
 					// hide notes canvas
 					if (colorButtons) {
-						notescanvas.querySelector('.palette').style.visibility = 'hidden';
+						document.querySelector('.palette.id0').style.visibility = 'hidden';
+						document.querySelector('.palette.id0').style.display = 'none';
 					}
 					notescanvas.style.background = 'rgba(0,0,0,0)';
 					notescanvas.style.pointerEvents = 'none';
@@ -1904,7 +1918,8 @@ const initChalkboard = function (Reveal) {
 				else {
 					// show notes canvas
 					if (colorButtons) {
-						notescanvas.querySelector('.palette').style.visibility = 'visible';
+						document.querySelector('.palette.id0').style.visibility = 'visible';
+						document.querySelector('.palette.id0').style.display = 'block';
 					}
 					notescanvas.style.background = background[0]; //'rgba(255,0,0,0.5)';
 					notescanvas.style.pointerEvents = 'auto';
