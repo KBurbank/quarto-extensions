@@ -58,9 +58,10 @@ if config['MAKE_WEBSITE_DIR']:
 
   # Copy '_site/site_libs' to 'website/.'
   dst = 'website/site_libs'
-  if os.path.exists(dst):
-      shutil.rmtree(dst)
-  shutil.copytree('_site/site_libs', dst)
+  if os.path.exists('_site/site_libs'):
+    if os.path.exists(dst):
+        shutil.rmtree(dst)
+    shutil.copytree('_site/site_libs', dst)
 
   # Copy '_site/*.html' to 'website/.'
   for file in glob.glob('_site/*.html'):
@@ -78,6 +79,6 @@ if config['MAKE_WEBSITE_DIR']:
     changes = repo.index.diff(repo.head.commit)
     if changes:
         print(repo.git.commit('-am', "automatically committed render output"))
-        print(repo.git.push())
+        print(repo.git.push('--force'))
     else:
         print("No changes to commit")
