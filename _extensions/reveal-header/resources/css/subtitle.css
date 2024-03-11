@@ -1,0 +1,48 @@
+
+.slide.level2.present h2 {display: none}
+
+.reveal-header .sub-title p {
+  font-size: max(20px, 3.45vw);
+/*  filter: brightness(0.85); */
+  color: white!important;
+vertical-align: center;
+}
+
+.reveal-header .sc-title p {
+  font-size: max(20px, 3.45vw);
+ filter: brightness(1)!important;
+  color: white!important;
+vertical-align: center;
+text-align: right;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  text-transform: none !important;
+}
+
+body {
+  display: flex;
+  flex-flow: column;
+  min-height: 100dvh;
+  overflow:visible;
+}
+.reveal {
+/*   !important;*/
+
+position: static;
+flex: 1 1 100%;
+}
+
+.reveal.embedded {
+  touch-action:none !important;
+}
+
+.reveal-header {
+  background-color: rgb(176, 189, 213);
+  margin: 0px !important;
+position: static;
+width: 100%;
+flex: 0 0 100%;
+}
