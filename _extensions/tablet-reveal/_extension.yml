@@ -7,7 +7,7 @@ contributes:
     project:
       type: website
       post-render: ["fixnotes.py","move_files.sh"]
-    format: tablet-reveal
+      format: tablet-reveal
     revealjs-plugins:
      - tablet-chalkboard
     format:
