@@ -1,0 +1,10 @@
+# Post render script configuration
+# if this is false then github steps won't happen either
+MAKE_WEBSITE_DIR: true
+DO_GITHUB: true
+
+# name of directory to create for website
+WEBSITE_DIR: website
+
+# github path for the rendered website. Something like git@github.com:GithubUserName/RepositoryName.git
+ORIGIN: git@github.com:KBurbank/stat24320.git
