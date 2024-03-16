@@ -60,13 +60,3 @@ if config['MAKE_WEBSITE_DIR']:
   for file in glob.glob('*.html'):
       os.remove(file)
 
-  if config['DO_GITHUB']:
-    repo = Repo('website')
-    repo.git.add('.')
-    changes = repo.index.diff(repo.head.commit)
-    if changes:
-       print('here')
-       print(repo.git.commit('-am', "automatically committed render output"))
-       print(repo.git.push())
-    else:
-        print("No changes to commit")
