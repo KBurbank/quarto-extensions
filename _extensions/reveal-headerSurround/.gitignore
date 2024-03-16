@@ -1,8 +1,0 @@
-*.html
-*.pdf
-*_files/
-*.native
-*.rproj
-.Rhistory
-.Rproj.user/
-!docs/*
