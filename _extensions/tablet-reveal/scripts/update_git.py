@@ -7,7 +7,7 @@ with open('_config.yml', 'r') as file:
 
 
 if config['DO_GITHUB']:
-    repo = Repo('website')
+    repo = Repo('.')
     repo.git.add('.')
     changes = repo.index.diff(repo.head.commit)
     if changes:

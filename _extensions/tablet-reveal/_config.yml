@@ -4,7 +4,7 @@ MAKE_WEBSITE_DIR: true
 DO_GITHUB: true
 
 # name of directory to create for website
-WEBSITE_DIR: website
+WEBSITE_DIR: docs
 
 
 # name of directory where quarto rendered the website

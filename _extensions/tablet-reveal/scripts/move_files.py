@@ -20,28 +20,17 @@ if config['MAKE_WEBSITE_DIR']:
             counter += 1
         return f"{base_name}.archive({counter})"
 
-    if os.path.isdir(config['WEBSITE_DIR']):
-        try:
-            repo = Repo(config['WEBSITE_DIR'])
-        except InvalidGitRepositoryError:
-            new_name = get_unique_name(config['WEBSITE_DIR'])
-            print(config['WEBSITE_DIR']+" is not a git repository. Archiving it as "+new_name)
-            os.rename(config['WEBSITE_DIR'], new_name)
-            repo = Repo.clone_from(config['ORIGIN'], config['WEBSITE_DIR'])
-        except Exception as e:
-            print(f"An error occurred: {e}")
-    else:
-        repo = Repo.clone_from(config['ORIGIN'], config['WEBSITE_DIR'])
+
 
     # Copy '_site/*_files' to 'website/.'
     for file in glob.glob(f'{OUTPUT_DIR}/*_files'):
-        dst = os.path.join('website', os.path.basename(file))
+        dst = os.path.join(config['WEBSITE_DIR'], os.path.basename(file))
         if os.path.exists(dst):
             shutil.rmtree(dst)
         shutil.copytree(file, dst)
 
     # Copy '_site/site_libs' to 'website/.'
-    dst = 'website/site_libs'
+    dst = config['WEBSITE_DIR']+'/site_libs'
     if os.path.exists(f'{OUTPUT_DIR}/site_libs'):
       if os.path.exists(dst):
           shutil.rmtree(dst)
@@ -49,7 +38,11 @@ if config['MAKE_WEBSITE_DIR']:
 
     # Copy '_site/*.html' to 'website/.'
     for file in glob.glob(f'{OUTPUT_DIR}/*.html'):
-        shutil.copy(file, 'website/')
+        shutil.copy(file, config['WEBSITE_DIR'])
+        
+    # Copy lectures to outputdir, as a directory
+    shutil.copytree('lectures', config['WEBSITE_DIR']+'/lectures')
+        
 
     # remove the output directory if the variable REMOVE_OUTPUT_DIR is set to true
     if config['REMOVE_OUTPUT_DIR']:
