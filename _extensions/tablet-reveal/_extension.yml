@@ -6,9 +6,10 @@ contributes:
   project:
     project:
       type: website
-      post-render: ["scripts/fixnotes.py","scripts/move_files.py","scripts/make_listing.py","scripts/update_git.py"]
+      # post-render: ["scripts/fixnotes.py","scripts/move_files.py","scripts/make_listing.py","scripts/update_git.py"]
+      post-render: ["scripts/fixnotes.py","scripts/clean_site.py","scripts/make_listing.py","scripts/update_git.py"]
       format: tablet-reveal
-      output-dir: site_tmp
+      output-dir: docs
     revealjs-plugins:
      - tablet-chalkboard
     format:

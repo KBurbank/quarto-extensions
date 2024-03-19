@@ -2,10 +2,3 @@ project:
   title: "Slideshow"
   type: tablet-reveal
 
-format: 
-  revealjs:
-    multiplex:
-      id: '088c3a9ce7c86f35'
-      secret: '17082113259002008212'
-
-
