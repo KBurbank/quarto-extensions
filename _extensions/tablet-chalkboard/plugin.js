@@ -1,13 +1,14 @@
 /*****************************************************************
- ** Author: Asvin Goel, goel@telematique.eu
+ ** Author: Kendra Burbank
  **
- ** A plugin for reveal.js adding a chalkboard.
+ ** A plugin for reveal.js adding a chalkboard, modified to work well with a stylus
  **
- ** Version: 2.1.0
+ ** Version: 1.0.0
  **
  ** License: MIT license (see LICENSE.md)
  **
  ** Credits:
+ ** Forked from work by Asvin Goel.
  ** Chalkboard effect by Mohamed Moustafa https://github.com/mmoustafa/Chalkboard
  ** Multi color support initially added by Kurt Rinnert https://github.com/rinnert
  ** Compatibility with reveal.js v4 by Hakim El Hattab https://github.com/hakimel
