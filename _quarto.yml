@@ -3,4 +3,4 @@ project:
   type: tablet-reveal
 
 kendra:
-  do_git: true
+  do_git: false
