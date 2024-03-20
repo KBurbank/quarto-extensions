@@ -3,7 +3,6 @@
 import os
 def replace_show_notes_in_files(filenames):
     for filename in filenames:
-        print(filename)
         if filename.endswith(".html") and not filename.endswith("-speaker.html"):
 
             with open(filename, 'r') as file:
