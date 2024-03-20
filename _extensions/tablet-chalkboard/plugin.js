@@ -1573,7 +1573,7 @@ const initChalkboard = function (Reveal) {
 				mouseY = touch.pageY - revealDiv.offsetTop;
 				saveInitial(mouseX, mouseY)
 				startDrawing((mouseX - xOffset) / scale, (mouseY - yOffset) / scale);
-				touchTimeout = setTimeout(startErasing, 500, (mouseX - xOffset) / scale, (mouseY - yOffset) / scale);
+				touchTimeout = setTimeout(startErasing, 1000, (mouseX - xOffset) / scale, (mouseY - yOffset) / scale);
 			}
 		}, passiveSupported ? {
 			passive: false
