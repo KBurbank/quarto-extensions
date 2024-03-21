@@ -3,7 +3,10 @@ import yaml
 import os
 import glob
 
-site_dir = os.getenv("QUARTO_PROJECT_OUTPUT_DIR")+"/lectures"
+if not os.getenv("QUARTO_PROJECT_RENDER_ALL"):
+  exit()
+
+site_dir = os.getenv("QUARTO_PROJECT_DIR")+"/docs/lectures"
 
 
 # find all the .html files in the "website" directory

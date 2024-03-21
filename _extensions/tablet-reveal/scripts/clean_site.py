@@ -4,12 +4,25 @@ import fnmatch
 
 # set a variable that is the output directory to be equal to "site_tmp"
 
-site_dir = os.getenv("QUARTO_PROJECT_OUTPUT_DIR")
+if not os.getenv("QUARTO_PROJECT_RENDER_ALL"):
+  exit()
+
+tmp_site_dir = os.getenv("QUARTO_PROJECT_OUTPUT_DIR")
 quarto_project_dir = os.getenv("QUARTO_PROJECT_DIR")
-if not site_dir or site_dir == quarto_project_dir or not quarto_project_dir:
+if not tmp_site_dir or tmp_site_dir == quarto_project_dir or not quarto_project_dir:
     exit()
 
+site_dir=quarto_project_dir+'/docs'
 
+# copy contents of tmp_site_dir into site_dir
+
+shutil.copytree(tmp_site_dir, site_dir, dirs_exist_ok=True)
+
+# shutil.rmtree(tmp_site_dir)
+try:
+    shutil.rmtree(os.path.join(site_dir,'docs'))
+except:
+    print("didn't remove docs directory from site because it wasn't there")
 # within site_dir, remove any folders or files that begin with "_"
 # List all directories and files in site_dir
 for name in os.listdir(site_dir):
