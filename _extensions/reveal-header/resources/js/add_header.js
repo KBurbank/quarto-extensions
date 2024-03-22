@@ -17,6 +17,24 @@ function header() {
     let footer = document.querySelector("div.reveal-footer");
     body.appendChild(footer)
 
+
+    const divElem = document.querySelector(".qpyodide-output-graph-area");
+    
+// if divElem is not null...
+    if (divElem !== null) {
+  // Your code here
+}
+
+      const resizeObserver = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          Reveal.layout()
+          console.log("size changed")
+        }
+      }
+      )
+      
+      resizeObserver.observe(divElem);
+
     let chalkboard = document.querySelectorAll("div.chalkboard-button")
 
     chalkboard.forEach((button) => {
