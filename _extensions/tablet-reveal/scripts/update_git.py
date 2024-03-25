@@ -2,8 +2,8 @@ import yaml
 import os
 from git import Repo
 
-if not os.getenv("QUARTO_PROJECT_RENDER_ALL"):
-  exit()
+#if not os.getenv("QUARTO_PROJECT_RENDER_ALL"):
+ # exit()
 
 try:
   with open('_quarto.yml', 'r') as file:
