@@ -5,11 +5,13 @@ import fnmatch
 # set a variable that is the output directory to be equal to "site_tmp"
 
 if not os.getenv("QUARTO_PROJECT_RENDER_ALL"):
-  exit()
+    print("Didn't render all")
+   # exit()
 
 tmp_site_dir = os.getenv("QUARTO_PROJECT_OUTPUT_DIR")
 quarto_project_dir = os.getenv("QUARTO_PROJECT_DIR")
 if not tmp_site_dir or tmp_site_dir == quarto_project_dir or not quarto_project_dir:
+    print("Dir doesn't exist")
     exit()
 
 site_dir=quarto_project_dir+'/docs'
