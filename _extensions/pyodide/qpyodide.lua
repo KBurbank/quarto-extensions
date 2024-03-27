@@ -345,7 +345,7 @@ function substitute_in_file(contents, substitutions)
 end
 
 local function qPyodideJSCellInsertionCode(counter)
-  local insertionLocation = '<div id="qpyodide-insertion-location-' .. counter ..'"></div>\n'
+  local insertionLocation = '<div id="qpyodide-insertion-location-' .. counter ..'"  class="qpyodide-insertion-class"></div>\n'
   local noscriptWarning = '<noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>'
   return insertionLocation .. noscriptWarning
 end

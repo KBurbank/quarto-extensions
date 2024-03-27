@@ -193,6 +193,7 @@ class InteractiveCell extends BaseCell {
         outputCodeAreaDiv.setAttribute('aria-live', 'assertive');
 
         // Create pre element inside output code area
+        // This preserves whitespace  and is displayed in a fixed-width font
         var preElement = document.createElement('pre');
         preElement.style.visibility = 'hidden';
         outputCodeAreaDiv.appendChild(preElement);

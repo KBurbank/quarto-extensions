@@ -45,6 +45,7 @@
 
 .qpyodide-editor {
   border: 1px solid #EEEEEE;
+  text-align: left;
 }
 
 .qpyodide-editor-toolbar {
@@ -94,8 +95,8 @@
 .reveal div.qpyodide-interactive-area {
   display: block;
   box-shadow: none;
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
   margin: 0;
   padding: 0;
 } 
@@ -103,16 +104,26 @@
 /* Provide space to entries */
 .reveal div.qpyodide-output-code-area pre div {
   margin: 1px 2px 1px 10px;
+  text-align: left;
+  padding-left: 10px;
+
 }
 
 /* Collapse the inside code tags to avoid extra space between line outputs */
 .reveal pre div code.qpyodide-output-code-stdout, .reveal pre div code.qpyodide-output-code-stderr {
   padding: 0;
   display: contents;
+
+}
+
+.reveal .qpyodide-insertion-class {
+  height: 100%;
+  width: 100%;
 }
 
 .reveal pre div code.qpyodide-output-code-stdout {
   color: #111;
+
 }
 
 .reveal pre div code.qpyodide-output-code-stderr {
@@ -122,13 +133,20 @@
 
 /* Create a border around console and output (does not effect graphs) */
 .reveal div.qpyodide-console-area {
-  border: 1px solid #EEEEEE;
+  border: 1px solid #251cc7;
   box-shadow: 2px 2px 10px #EEEEEE;
+  background: white;
 }
 
 /* Cap output height and allow text to scroll */
 /* TODO: Is there a better way to fit contents/max it parallel to the monaco editor size? */
 .reveal div.qpyodide-output-code-area pre {
   max-height: 400px;
+  min-height: 100px;
   overflow: scroll;
+  font-size:1.2rem;
+}
+
+.slide {
+  height:100%;
 }
