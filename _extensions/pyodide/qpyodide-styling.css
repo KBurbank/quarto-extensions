@@ -13,6 +13,8 @@
   display: flex;
 }
 
+
+
 .qpyodide-non-interactive-loading-container.qpyodide-cell-needs-evaluation, .qpyodide-non-interactive-loading-container.qpyodide-cell-evaluated {
   justify-content: center;
   display: flex;
@@ -116,10 +118,41 @@
 
 }
 
-.reveal .qpyodide-insertion-class {
-  height: 100%;
-  width: 100%;
+.qpyodide-outside-insertion-location {
+    height: 90dvh;
+    width: 90dvw;
+    position: fixed;
+    z-index: 100;
+    /* top: 0px; */
+    margin: 30px;
+    border: black solid;
+    background-color: white;
+    /* scale: 1; */
+    pointer-events: auto;
+    display:none;
+    overflow-y: scroll;
+    scale: 1;
+    font-size: 1rem;
+  }
+
+  .qpyodide-outside-insertion-location .qpyodide-interactive-area {
+  /*  font-size: 12px!important;
+    line-height: 14px!important; */
+    scale: 1;
+  }
+
+.qpyodide-outside-insertion-location .view-lines,
+ .qpyodide-outside-insertion-location .margin-view-overlays, .qpyodide-outside-insertion-location .qpyodide-output-code-area  {
+  font-size: inherit!important;
+  line-height: inherit!important;
 }
+
+
+  .qpyodide-output-graph-area {
+    width: 80dvw;
+  }
+
+
 
 .reveal pre div code.qpyodide-output-code-stdout {
   color: #111;
@@ -144,9 +177,10 @@
   max-height: 400px;
   min-height: 100px;
   overflow: scroll;
-  font-size:1.2rem;
+  font-size:1rem;
 }
 
 .slide {
   height:100%;
 }
+

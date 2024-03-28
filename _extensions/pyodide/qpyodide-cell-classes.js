@@ -74,6 +74,18 @@ class BaseCell {
         this.id = cellData.id;
         this.options = cellData.options;
         this.insertionLocation = document.getElementById(`qpyodide-insertion-location-${this.id}`);
+        
+        // FIX THIS WHEN YOU GET BACK
+        // check if a div already exists
+        if(document.getElementById(`qpyodide-outside-insertion-location`)==null){
+            var outsideInsertionDiv = document.createElement('div');
+            outsideInsertionDiv.id='qpyodide-outside-insertion-location';
+            outsideInsertionDiv.className='qpyodide-outside-insertion-location';
+            document.getElementsByClassName("reveal-viewport")[0].appendChild(outsideInsertionDiv);
+            this.outsideInsertionLocation = outsideInsertionDiv
+        }
+
+        
         this.executionLock = false;
     }
 
@@ -126,6 +138,10 @@ class InteractiveCell extends BaseCell {
             mainDiv.className += " " + this.options.classes
         }
 
+        // Create outside insertion location div
+        var outsideDiv = document.createElement('div');
+        outsideDiv.className = `qpyodide-outside-insertion-area`;
+
         // Add a unique cell identifier that users can customize
         if (this.options.label) {
             mainDiv.setAttribute('data-id', this.options.label);
@@ -156,6 +172,10 @@ class InteractiveCell extends BaseCell {
         // Append buttons to the leftButtonsDiv
         leftButtonsDiv.appendChild(runCodeButton);
 
+
+
+
+
         // Create Reset button
         var resetButton = document.createElement('button');
         resetButton.className = 'btn btn-light btn-xs qpyodide-button qpyodide-button-reset';
@@ -163,6 +183,16 @@ class InteractiveCell extends BaseCell {
         resetButton.id = `qpyodide-button-reset-${this.id}`;
         resetButton.title = 'Start over';
         resetButton.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i>';
+
+        // Create Popout button
+
+      // Create Zoom button
+        var zoomButton = document.createElement('button');
+        zoomButton.className = 'btn btn-light btn-xs qpyodide-button qpyodide-button-zoom';
+        zoomButton.type = 'button';
+        zoomButton.id = `qpyodide-button-zoom-${this.id}`;
+        zoomButton.title = 'Zoom code editor';
+        zoomButton.innerHTML = '<i class="fa-regular fa-copy"></i>';
 
         // Create Copy button
         var copyButton = document.createElement('button');
@@ -175,6 +205,7 @@ class InteractiveCell extends BaseCell {
         // Append buttons to the rightButtonsDiv
         rightButtonsDiv.appendChild(resetButton);
         rightButtonsDiv.appendChild(copyButton);
+        rightButtonsDiv.appendChild(zoomButton);
 
         // Create console area div
         var consoleAreaDiv = document.createElement('div');
@@ -228,7 +259,9 @@ class InteractiveCell extends BaseCell {
         mainDiv.appendChild(outputGraphAreaDiv);
 
         // Insert the dynamically generated object at the document location.
-        this.insertionLocation.appendChild(mainDiv);
+
+       this.insertionLocation.appendChild(mainDiv);
+        //console.log(this.outsideInsertionLocation)
     }
 
     /**
@@ -240,10 +273,13 @@ class InteractiveCell extends BaseCell {
         this.runButton = document.getElementById(`qpyodide-button-run-${this.id}`);
         this.resetButton = document.getElementById(`qpyodide-button-reset-${this.id}`);
         this.copyButton = document.getElementById(`qpyodide-button-copy-${this.id}`);
+        this.zoomButton = document.getElementById(`qpyodide-button-zoom-${this.id}`);
         this.editorDiv = document.getElementById(`qpyodide-editor-${this.id}`);
         this.outputCodeDiv = document.getElementById(`qpyodide-output-code-area-${this.id}`);
         this.outputGraphDiv = document.getElementById(`qpyodide-output-graph-area-${this.id}`);
-        
+        this.outsideInsertionLocation=document.getElementsByClassName("qpyodide-outside-insertion-location")[0];
+        this.InsertionLocation = document.getElementById(`qpyodide-insertion-location-${this.id}`);
+        this.mainDiv=document.getElementById(`qpyodide-interactive-area-${this.id}`);
         // Store reference to the object
         var thiz = this;
 
@@ -384,6 +420,31 @@ class InteractiveCell extends BaseCell {
             
             // Write code data onto the clipboard.
             navigator.clipboard.writeText(data || "");
+        };
+
+        thiz.zoomButton.onclick = function () {
+            // Retrieve current code data
+            console.log(thiz.mainDiv.parentNode)
+            if(thiz.mainDiv.parentNode===thiz.outsideInsertionLocation){
+                console.log(thiz.InsertionLocation)
+                thiz.InsertionLocation.appendChild(thiz.mainDiv)
+                console.log("inserted into main doc")
+                thiz.outsideInsertionLocation.style.display = "none";
+                thiz.editor.EditorOptions.fontSize='17.5px';
+              }  else {
+                    console.log("inserted into outside location")
+                thiz.outsideInsertionLocation.appendChild(thiz.mainDiv)
+                thiz.outsideInsertionLocation.style.display = "block";
+                thiz.editor.EditorOptions.fontSize='12px';
+          //  thiz.outsideInsertionLocation.appendChild(thiz.mainDiv)
+
+                }
+
+       //     document.getElementById("")
+       //     const data = thiz.editor.getValue();
+            
+            // Write code data onto the clipboard.
+       //     navigator.clipboard.writeText(data || "");
         };
         
         // Add a click event listener to the copy button

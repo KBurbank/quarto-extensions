@@ -326,6 +326,7 @@ function ensurePyodideSetup()
   -- Insert the Monaco Editor initialization
   quarto.doc.include_file("before-body", "qpyodide-monaco-editor-init.html")
 
+  
   -- Insert the cell data at the end of the document
   includeFileInHTMLTag("after-body", "qpyodide-cell-classes.js", "module")
 
