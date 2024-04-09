@@ -1,0 +1,25 @@
+title: hw-solutions
+author: Kendra Burbank
+version: 1.0.0
+quarto-required: ">=1.2.0"
+contributes:
+  css: [solutions.css]
+  format:
+    html:
+      css: [styles.css, solutions.css]
+      toc: true
+      filters:
+        - solutions.lua
+      output-ext: sol.html
+    pdf: 
+      include-in-header: 
+        text: '\usepackage{mdframed}
+        \newenvironment{solutions}
+        {\begin{mdframed}[backgroundcolor=lightgray]}
+        {\end{mdframed}}'
+      filters:
+        - solutions.lua
+      output-ext: sol.pdf
+
+
+

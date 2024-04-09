@@ -7,7 +7,7 @@ contributes:
     project:
       type: website
       # post-render: ["scripts/fixnotes.py","scripts/move_files.py","scripts/make_listing.py","scripts/update_git.py"]
-      post-render: ["scripts/fixnotes.py","scripts/clean_site.py","scripts/make_listing.py","scripts/update_git.py"]
+      post-render: ["scripts/fixnotes.py","scripts/clean_site.py","scripts/make_listing_lecture_types.py","scripts/remove_not_ready.sh","scripts/update_git.py"]
       format: tablet-reveal
       output-dir: _site
     revealjs-plugins:
@@ -21,7 +21,7 @@ contributes:
           header : ""
           slide-level: 3
           incremental: true
-          theme: [sky]
+       #   theme: [sky]
           center: true
           number-sections: false
           number-depth: 2

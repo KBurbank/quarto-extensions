@@ -1,0 +1,194 @@
+@charset "UTF-8";
+/*-- scss:defaults --*/
+/*
+Note: This theme uses the Roboto font family, which it imports from Google
+  Fonts to ensure consistent weighting in addition to availability. While
+  you can use a local installation of Roboto, this is generally not 
+  recommended since the weighting will likely be wrong (probably too
+  light). OTOH, importing from Google Fonts can cause some issues in
+  certain secure environments due the external CDN (see:
+  https://github.com/grantmcdermott/quarto-revealjs-clean/issues/7). If
+  that's the case for you, simply comment out the `@import url(...)` line
+  below and it will default for the default Sans Serif font on your system
+  (e.g., Helvetica on a Mac). Circling back to the earlier point about
+  preserving consistent font weights, you may also wish to remove "Roboto"
+  from the choice set if the family is installed locally.
+*/
+@import url(https://fonts.googleapis.com/css?family=Roboto:200,200i,300,300i,350,350i,400,400i);
+/*-- scss:rules --*/
+.reveal a {
+  line-height: 1.5em;
+}
+
+.reveal p {
+  font-weight: lighter;
+  margin-top: 1.25em;
+}
+
+#title-slide {
+  text-align: left;
+}
+#title-slide .title {
+  color: #131516;
+  font-size: 1.4em;
+  font-weight: lighter;
+}
+#title-slide .subtitle {
+  color: #107895;
+  font-style: italic;
+  margin-top: 0em;
+  font-weight: lighter;
+}
+#title-slide .institute,
+#title-slide .quarto-title-affiliation,
+#title-slide .quarto-title-author-email {
+  font-style: italic;
+}
+#title-slide .author,
+#title-slide .quarto-title-author-name {
+  color: #131516;
+}
+#title-slide .quarto-title-authors {
+  display: flex;
+  justify-content: left;
+}
+#title-slide .quarto-title-authors .quarto-title-author {
+  padding-left: 0em;
+  padding-right: 0em;
+  width: 100%;
+}
+
+.reveal h2 {
+  font-weight: lighter;
+  font-size: 1.4em;
+}
+
+.reveal h3 {
+  color: #107895;
+  font-style: italic;
+  font-weight: lighter;
+  font-size: 0.95em;
+}
+
+.reveal h4 {
+  color: #9a2515;
+  font-weight: normal;
+  margin-top: 1.25em;
+}
+
+.alert {
+  color: #9a2515;
+}
+
+.fg {
+  color: var(--col, #131516);
+}
+
+.bg {
+  background-color: var(--col, #fff);
+  padding: 0.1em;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.reveal ul {
+  font-weight: lighter;
+  padding-left: 16px;
+}
+.reveal ul li::marker {
+  color: #58a1b5;
+}
+
+.reveal ul ul {
+  list-style: none;
+}
+.reveal ul ul li:before {
+  content: "→";
+  color: #70aebf;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+  margin-right: 0.5em;
+}
+
+.reveal ol {
+  font-weight: lighter;
+  padding-left: 16px;
+}
+.reveal ol li::marker {
+  color: #107895;
+}
+
+.reveal .slide-menu-button {
+  position: fixed;
+  top: 6px;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+.reveal .slide-menu-button > * {
+  pointer-events: auto;
+}
+
+.reveal .slide-chalkboard-buttons {
+  position: fixed;
+  top: 12px;
+  right: 24px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+.reveal .slide-chalkboard-buttons > * {
+  pointer-events: auto;
+}
+
+.button {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  background-color: #107895;
+  border: 1px solid #107895;
+  color: #fff !important;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+}
+
+.button:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.button::before {
+  content: "▶";
+  margin-right: 5px;
+}
+
+.etable {
+  width: 100%;
+  height: calc(100% - 3em); /* Adjust 3em based on the height of your header, if necessary */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.etable img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  -o-object-fit: contain;
+     object-fit: contain;
+}/*# sourceMappingURL=clean.css.map */
