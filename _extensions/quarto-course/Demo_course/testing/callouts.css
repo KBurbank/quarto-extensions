@@ -1,0 +1,174 @@
+/*!
+ * Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ * Copyright 2023 Fonticons, Inc.
+ */
+:root, :host {
+  --fa-style-family-classic: "Font Awesome 6 Free";
+  --fa-font-solid: normal 900 1em/1 "Font Awesome 6 Free";
+}
+
+@font-face {
+  font-family: "Font Awesome 6 Free";
+  font-style: normal;
+  font-weight: 900;
+  font-display: block;
+  src: url("./fontawesome/webfonts/fa-solid-900.woff2") format("woff2"), url("./fontawesome/webfonts/fa-solid-900.ttf") format("truetype");
+}
+.fas,
+.fa-solid,
+.callosdfdsut-body:before,
+.important:before,
+.question:before,
+.fire-callout:before,
+.toplevel > label:before,
+.toplevel > h3:before,
+.toplevel .label:before {
+  font-weight: 900;
+}
+
+/*-- scss:rules --*/
+.toplevel {
+  border: solid;
+  border-radius: 2px;
+  border-width: 3px;
+  position: relative;
+  margin-top: 2em;
+  padding-top: 1.5em;
+  padding-left: 1.5em;
+  padding-bottom: 1em;
+  padding-right: 1.5em;
+  min-width: 50%;
+  width: -moz-fit-content;
+  width: fit-content;
+  border-color: #2C3E50;
+  color: #2C3E50;
+}
+.toplevel > h3 {
+  font-size: unset;
+  font-weight: unset;
+}
+.toplevel > label, .toplevel > h3, .toplevel .label {
+  line-height: 2em;
+  transform: translateY(-1.5em) translateX(10%);
+  top: 0px;
+  left: 0px;
+  z-index: 10;
+  border: solid;
+  padding: 1px;
+  position: absolute;
+  padding-left: 0.8em;
+  padding-right: 0.8em;
+  border-radius: 0.8em;
+  padding-bottom: 0.2em;
+}
+.toplevel > label, .toplevel > h3, .toplevel .label {
+  background-color: #2C3E50;
+  color: #F7F9FB;
+}
+.toplevel > label:before, .toplevel > h3:before, .toplevel .label:before {
+  font-family: "Font Awesome 6 Free";
+  content: "\f0e7";
+  display: inline-block;
+  padding: 0.5em;
+  vertical-align: middle;
+  vertical-align: text-bottom;
+  margin-left: 0;
+  padding-left: 0;
+  font-size: 1.25em;
+  line-height: 0.05em;
+  vertical-align: -0.075em;
+}
+
+.fire-callout {
+  color: #F7F9FB;
+  background-color: #2C3E50;
+  text-decoration: none;
+  border: none;
+  border-radius: 1em;
+  overflow-y: auto;
+  padding: 0.5em;
+}
+.fire-callout:before {
+  font-family: "Font Awesome 6 Free";
+  content: "\f0ab";
+  display: inline-block;
+  padding: 0.5em;
+  vertical-align: middle;
+  font-size: 3.5em;
+  border-radius: 0.2em;
+  float: inline-start;
+  margin-bottom: 0px;
+  margin: 0.1em;
+  padding: 0.1em;
+}
+
+.question {
+  color: #F7F9FB;
+  background-color: #2C3E50;
+  text-decoration: none;
+  border: none;
+  border-radius: 1em;
+  overflow-y: auto;
+  padding: 0.5em;
+}
+.question:before {
+  font-family: "Font Awesome 6 Free";
+  content: "\f059";
+  display: inline-block;
+  padding: 0.5em;
+  vertical-align: middle;
+  font-size: 3.5em;
+  border-radius: 0.2em;
+  float: inline-start;
+  margin-bottom: 0px;
+  margin: 0.1em;
+  padding: 0.1em;
+}
+
+.important {
+  color: #F7F9FB;
+  background-color: #2C3E50;
+  text-decoration: none;
+  border: none;
+  border-radius: 1em;
+  overflow-y: auto;
+  padding: 0.5em;
+}
+.important:before {
+  font-family: "Font Awesome 6 Free";
+  content: "\f06a";
+  display: inline-block;
+  padding: 0.5em;
+  vertical-align: middle;
+  font-size: 3.5em;
+  border-radius: 0.2em;
+  float: inline-start;
+  margin-bottom: 0px;
+  margin: 0.1em;
+  padding: 0.1em;
+}
+
+.callosdfdsut-body {
+  all: unset;
+  color: #F7F9FB;
+  background-color: #2C3E50;
+  text-decoration: none;
+  border: none;
+  border-radius: 1em;
+  overflow-y: auto;
+  padding: 0.5em;
+}
+.callosdfdsut-body:before {
+  font-family: "Font Awesome 6 Free";
+  content: "\f06a";
+  display: inline-block;
+  padding: 0.5em;
+  vertical-align: middle;
+  font-size: 3.5em;
+  border-radius: 0.2em;
+  float: inline-start;
+  margin-bottom: 0px;
+  margin: 0.1em;
+  padding: 0.1em;
+}/*# sourceMappingURL=callouts.css.map */

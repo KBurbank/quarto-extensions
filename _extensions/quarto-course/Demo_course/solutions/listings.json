@@ -1,0 +1,20 @@
+[
+  {
+    "listing": "/index.html",
+    "items": [
+      "/lectures/ch2_lecture1.html",
+      "/lectures/ch2_lecture2.html",
+      "/lectures/ch2_lecture3.html",
+      "/lectures/ch2_lecture4.html",
+      "/lectures/ch1_lecture1b.html",
+      "/lectures/ch1_lecture2.html",
+      "/notebooks/mcmc_pagerank.html",
+      "/notebooks/pagerank_tutorial.html",
+      "/notebooks/turing_patterns.html",
+      "/HW/HW1.html",
+      "/HW/HW2.html",
+      "/HW/HW3.html",
+      "/HW/projects_1.html"
+    ]
+  }
+]

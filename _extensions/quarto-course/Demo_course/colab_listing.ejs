@@ -1,0 +1,67 @@
+```{=html}
+
+<% if("colab-interior" in templateParams){ colabInterior=templateParams["colab-interior"]; } else { colabInterior=`<img
+    src="data:image/png;base64,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"
+    width=20 height=20 alt="Open In Colab">`
+    }
+
+    if("colab-base-url" in templateParams){
+    colabBaseUrl = templateParams["colab-base-url"];
+    } else {
+    colabBaseUrl =
+    "https://colab.research.google.com/github/"+templateParams["git-username"]+"/"+templateParams["git-repo"]+"/blob/main"
+    }
+
+    if("sort" in templateParams){
+    let sortArray = templateParams["sort"].split(" ");
+    if(sortArray.length>1){
+    direction = sortArray[1];
+    } else {
+    direction = 'asc'
+    }
+    let sortKey = sortArray[0]
+    if (direction==="desc"){
+    items.sort((a, b) => b[sortKey] - a[sortKey]);
+    } else {
+    items.sort((a, b) => a[sortKey] - b[sortKey]);
+    }
+    }
+
+    %>
+
+
+    <table class="quarto-listing-table table">
+        <tr>
+            <th>Title</th>
+            <% for (const [key, value] of Object.entries(templateParams['field-display-names'])) { %>
+                <th>
+                    <%= value %>
+                </th>
+                <% } %>
+                    <th>Colab Link</th>
+        </tr>
+        <ul>
+            <% for (const item of items) { %>
+                <tr <%=metadataAttrs(item) %>>
+                    <td>
+                        <a href="<%- item.path %>">
+                            <%= item.title %>
+                        </a>
+                    </td>
+
+                    <% for (const [key, value] of Object.entries(templateParams['field-display-names'])) { %>
+                        <td>
+                            <%= item[key] %>
+                        </td>
+                        <% } %>
+                            <% let split=item.path.split('.'); split.pop(); let finalName=split.join("."); %>
+
+                                <td><a href="<%- colabBaseUrl + finalName + templateParams['colab-filetype']%>">
+                                        <%= colabInterior %>
+                                    </a></td>
+
+                </tr>
+
+                <% } %>
+    </table>
+```

@@ -1,0 +1,25 @@
+project:
+  title: "LinearAlgLectures"
+  type: quarto-course
+  render:
+    - "*.qmd"
+    - "notebooks/*.ipynb"
+    - "!docs/"
+
+filters:
+  - callout_exercise.lua
+  - replace_notes.lua
+
+#theme:
+ # - callouts.css
+
+execute:
+  freeze: auto
+  cache: true
+
+website:
+  title: "Stat 24320"
+  
+custom:
+  do_git: true
+  git_dirs: [".","docs"]

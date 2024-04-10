@@ -1,0 +1,58 @@
+---
+title: "Stat 24320"
+format: html
+listing: 
+  - id: lecture-notes
+    contents: 
+      "lectures/*.qmd"
+    template: colab_listing.ejs
+    include:
+      publish: true
+    template-params:
+      field-display-names: 
+        lecture_day: "Lecture Day"
+        readings: "Readings"
+      git-username: "KBurbank"
+      git-repo: "stat24320"
+      colab-filetype: ".out.ipynb"
+      sort: "lecture_day asc"
+  - id: notebooks
+    template: colab_listing.ejs
+    include:
+      publish: true
+    contents: "notebooks/*[!(.out)].ipynb"
+    template-params:
+      test: "test"
+      field-display-names: 
+        lecture-day: "Lecture Day"
+      git-username: "KBurbank"
+      git-repo: "stat24320"
+      colab-filetype: ".out.ipynb"
+      sort: "lecture-day asc"
+  - id: homeworks
+    template: "hw_listing.ejs"
+    contents: 
+      - "HW/*.qmd"
+    include:
+      publish: true
+    template-params:
+      fields: [title, textbook-chapters,due-date]
+      field-display-names:
+        due-date: "Due Date"
+        textbook-chapters: "Textbook Chapters"
+---
+
+## Lecture Notes
+
+:::{#lecture-notes}
+:::
+
+## Notebooks
+
+:::{#notebooks}
+:::
+
+## Homeworks
+
+:::{#homeworks}
+:::

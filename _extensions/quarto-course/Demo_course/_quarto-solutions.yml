@@ -1,0 +1,6 @@
+filters: ["HW/solutions.lua"]
+project:
+  output-dir: "solutions"
+  post-render: ["scripts/clean_site.py","scripts/make_listing.py","scripts/update_git.py"]
+custom:
+  do_git: false

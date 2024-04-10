@@ -1,0 +1,8 @@
+# Post render script configuration
+# if this is false then github steps won't happen either
+
+DO_GITHUB: true
+
+
+# github path for the rendered website. Something like git@github.com:GithubUserName/RepositoryName.git
+ORIGIN: git@github.com:KBurbank/stat24320.git

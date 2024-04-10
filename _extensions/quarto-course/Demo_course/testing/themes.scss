@@ -1,0 +1,50 @@
+
+
+$themes: (
+  purple-edge: (
+    color: black,
+    background-color: white
+  ),
+  blue-theme: (
+    color: #ffffff,
+    background-color: #007BFF
+  ),
+  green-theme: (
+    color: #ffffff,
+    background-color: #28a745
+  ),
+  fire: (
+    color: #ffffff,
+    background-color: #dc3545
+  ),
+  yellow-theme: (
+    color: #212529,
+    background-color: #ffc107
+  ),
+  sunset: (
+    color: #353839,
+    background-color: #FDB813,
+    main-text-color: black
+  ),
+  forest: (
+    color: #F7F9FB,
+    background-color: #184E77
+  ),
+  rose: (
+    color: #F7F9FB,
+    background-color: #C06C84
+  ),
+  midnight: (
+    color: #F7F9FB,
+    background-color: #2C3E50,
+    main-text-color: #2C3E50
+  )
+);
+
+@each $theme, $colors in $themes {
+  %theme-#{$theme} {
+    color: map-get($colors, color);
+    background-color: map-get($colors, background-color);
+    }
+  
+}

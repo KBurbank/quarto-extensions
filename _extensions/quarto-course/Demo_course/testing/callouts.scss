@@ -1,0 +1,26 @@
+@import './themes.scss';
+@import './geometry.scss';
+
+/*-- scss:rules --*/
+
+.toplevel{
+    @include toplabel-box("midnight",$fa-var-bolt)
+}
+
+
+.fire-callout{
+      @include callout-box("midnight",$fa-var-arrow-circle-down)
+    }
+
+.question{
+    @include callout-box("midnight",$fa-var-circle-question)
+}
+
+.important{
+    @include callout-box("midnight",$fa-var-circle-exclamation)
+}
+
+.callosdfdsut-body{
+    all: unset;
+    @include callout-box("midnight",$fa-var-circle-exclamation)
+}

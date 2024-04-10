@@ -1,0 +1,9 @@
+format:
+  html: default
+  ipynb:
+    output-ext: "out.ipynb"
+
+    
+
+
+

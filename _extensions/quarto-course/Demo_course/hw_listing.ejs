@@ -1,0 +1,39 @@
+```{=html}
+<table class="quarto-listing-table table">
+        <tr>
+            <th>Title</th>
+            <% for (const [key, value] of Object.entries(templateParams['field-display-names'])) { %>
+                <th>
+                    <%= value %>
+                </th>
+                <% } %>
+                    <th>Solutions</th>
+        </tr>
+        <ul>
+            <%  
+                 for (const item of items) { %>
+    </a>            <tr <%=metadataAttrs(item) %>>
+                    <td>
+                        <a href="<%- item.path %>">
+                            <%= item.title %>
+                        </a>
+                    </td>
+
+                    <% for (const [key, value] of Object.entries(templateParams['field-display-names'])) { %>
+                        <td>
+                            <%= item[key] %>
+                        </td>
+                        <% } %>
+                            <% let split=item.path.split('.'); split.pop(); let finalName=split.join(".") + ".sol.html"; %>
+                           
+                            <% if(item['publish-solutions-on'] && new Date(item['publish-solutions-on']) <= new Date()) { %>
+                                <td><a href="<%- finalName  %>">
+                                        <%= item.title + " Solutions" %>
+                                    </a></td>
+                            <% }  %>
+
+                </tr>
+
+                <% } %>
+    </table>
+```

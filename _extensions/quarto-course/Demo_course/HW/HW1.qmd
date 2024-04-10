@@ -1,0 +1,229 @@
+---
+title: Homework 1
+number-sections: true
+section-divs: true
+publish: true
+due-date: Wednesday, Week 2
+textbook-chapters: 1
+publish-solutions-on: 2024-02-23
+format:
+    html: default
+    hw-solutions-html: default
+---
+
+#
+
+
+By solving a $3 \times 3$ system, find the coefficients in the equation of the parabola $y=\alpha+\beta x+\gamma x^{2}$ that passes through the points $(1,1),(2,2)$, and $(3,0)$.
+
+::: {.solutions .content-show when-profile="solutions"}
+(Meyer 1.2.10) 
+ $\alpha=-3, \beta=\frac{11}{2}$, and $\gamma=-\frac{3}{2}$
+:::
+
+#
+
+
+Suppose that 100 insects are distributed in an enclosure consisting of four chambers with passageways between them as shown below.
+
+![](https://cdn.mathpix.com/cropped/2024_02_23_364f690b3cef9227e7c9g-017.jpg?height=369&width=637&top_left_y=1270&top_left_x=756)
+
+At the end of one minute, the insects have redistributed themselves. Assume that a minute is not enough time for an insect to visit more than one chamber and that at the end of a minute $40 \%$ of the insects in each chamber have not left the chamber they occupied at the beginning of the minute. The insects that leave a chamber disperse uniformly among the chambers that are directly accessible from the one they initially occupied-e.g., from $\# 3$, half move to $\# 2$ and half move to $\# 4$.
+
+
+(a) If at the end of one minute there are $12,25,26$, and 37 insects in chambers $\# 1, \# 2, \# 3$, and $\# 4$, respectively, determine what the initial distribution had to be.
+
+(b) If the initial distribution is $20,20,20,40$, what is the distribution at the end of one minute?
+
+
+::: {.solutions .content-show when-profile="solutions"}
+(Meyer 1.2.11)
+(a) If $x_{i}=$ the number initially in chamber $\# i$, then
+
+$$
+\begin{aligned}
+.4 x_{1}+0 x_{2}+0 x_{3}+.2 x_{4} & =12 \\
+0 x_{1}+.4 x_{2}+.3 x_{3}+.2 x_{4} & =25 \\
+0 x_{1}+.3 x_{2}+.4 x_{3}+.2 x_{4} & =26 \\
+.6 x_{1}+.3 x_{2}+.3 x_{3}+.4 x_{4} & =37
+\end{aligned}
+$$
+
+and the solution is $x_{1}=10, x_{2}=20, x_{3}=30$, and $x_{4}=40$.
+
+(b) $16,22,22,40$
+:::
+
+#
+
+Suppose that $[\mathbf{A} \mid \mathbf{b}]$ is the augmented matrix associated with a linear system. You know that performing row operations on $[\mathbf{A} \mid \mathbf{b}]$ does not change the solution of the system. However, no mention of column operations was ever made because column operations can alter the solution.
+
+(a) Describe the effect on the solution of a linear system when columns $\mathbf{A}_{* j}$ and $\mathbf{A}_{* k}$ are interchanged.
+
+(b) Describe the effect when column $\mathbf{A}_{* j}$ is replaced by $\alpha \mathbf{A}_{* j}$ for $\alpha \neq 0$.
+
+(c) Describe the effect when $\mathbf{A}_{* j}$ is replaced by $\mathbf{A}_{* j}+\alpha \mathbf{A}_{* k}$. Hint: Experiment with a $2 \times 2$ or $3 \times 3$ system.
+
+::: {.solutions .content-show when-profile="solutions"}
+(Meyer 1.2.13)
+a. This has the effect of interchanging the order of the unknowns $-x_{j}$ and $x_{k}$ are p
+b. The solution to the new system is the same as the solution to the old system except that the solution for the $j^{\text {th }}$ unknown of the new system is $\hat{x}_{j}=\frac{1}{\alpha} x_{j}$. This has the effect of "changing the units" of the $j^{\text {th }}$ unknown.
+c. The solution to the new system is the same as the solution for the old system except that the solution for the $k^{t h}$ unknown in the new system is $\hat{x}_{k}=x_{k}-\alpha x_{j}$.
+:::
+
+
+# 
+
+Use the Gauss-Jordan method to solve the following three systems at the same time.
+
+$$
+\begin{array}{rr|l|l}
+2 x_{1}-x_{2} & =1 & 0 & 0 \\
+-x_{1}+2 x_{2}-x_{3}&=0 & 1 & 0 \\
+-x_{2}+x_{3}&=0 & 0 & 1
+\end{array}
+$$
+
+::: {.solutions .content-show when-profile="solutions"}
+(Meyer 1.3.3)
+$$
+\left(\begin{array}{lll}1 & 1 & 1 \\ 1 & 2 & 2 \\ 1 & 2 & 3\end{array}\right)
+$$
+
+:::
+#
+
+ Consider the following system:
+
+$$
+\begin{aligned}
+10^{-3} x-y & =1, \\
+x+y & =0 .
+\end{aligned}
+$$
+
+(a) Use 3-digit arithmetic with no pivoting to solve this system.
+
+(b) Find a system that is exactly satisfied by your solution from part (a), and note how close this system is to the original system.
+
+(c) Now use partial pivoting and 3-digit arithmetic to solve the original system.
+
+(d) Find a system that is exactly satisfied by your solution from part (c), and note how close this system is to the original system.
+
+(e) Use exact arithmetic to obtain the solution to the original system, and compare the exact solution with the results of parts (a) and (c).
+
+(f) Round the exact solution to three significant digits, and compare the result with those of parts (a) and (c).
+
+::: {.solutions .content-show when-profile="solutions"}
+(Meyer 1.5.1)
+(a)
+```{python}
+#| echo: false
+#| output: asis
+import sympy as sym
+def mylatex(expr, **kwargs):
+    print(sym.latex(expr, mode='inline', **kwargs))
+x, y = sym.symbols('x y')
+M = sym.Matrix([[10**-3, -1, 1], [1, 1, 0]])
+mylatex(M)
+print('$\overrightarrow{E_{2,1}(1000)}$')
+M = sym.N(M.elementary_row_op("n->n+km", k=-1000,row1=1,row2=0),3)
+mylatex(M)
+print('$\overrightarrow{E_{1}(1000)}$')
+M = sym.N(M.elementary_row_op("n->kn", k=1000,row=0),3)
+mylatex(M,full_prec=True)
+```
+
+
+The solution is $(0,-1)$.
+
+(b) One example of a system whose exact solution is $0,-1$ would be
+
+$$
+\begin{aligned}
+2x-y & =1, \\
+x+y & =-1 .
+\end{aligned}
+$$
+
+This is not close at all to the original system!
+
+(c)
+
+```{python}
+#| echo: false
+#| output: asis
+M = sym.Matrix([[10**-3, -1, 1], [1, 1, 0]])
+mylatex(M)
+print('$\overrightarrow{E_{2,1}}$')
+M = sym.N(M.elementary_row_op("n<->m", row1=1,row2=0),3)
+mylatex(M)
+print('$\overrightarrow{E_{2,1}(1/1000)}$')
+M = sym.N(M.elementary_row_op("n->n+km", k=-1/1000,row1=1,row2=0),3)
+mylatex(M,full_prec=True)
+```
+
+Solution is $(1,-1)$.
+
+(d)  One example of a system whose exact solution is $1,-1$ would be 
+$$
+\begin{aligned}
+0 x-y & =1, \\
+x+y & =0 .
+\end{aligned}
+$$
+
+This is very close to the original system!
+
+(e) $\left(\frac{1}{1.001}, \frac{-1}{1.001}\right)$
+
+This is close to our solution in (c).
+:::
+
+#
+
+Consider the following well-scaled matrix:
+
+$$
+\mathbf{W}_{n}=\left(\begin{array}{rrrrrrr}
+1 & 0 & 0 & \cdots & 0 & 0 & 1 \\
+-1 & 1 & 0 & \cdots & 0 & 0 & 1 \\
+-1 & -1 & 1 & \ddots & 0 & 0 & 1 \\
+\vdots & \vdots & \ddots & \ddots & \ddots & \vdots & \vdots \\
+-1 & -1 & -1 & \ddots & 1 & 0 & 1 \\
+-1 & -1 & -1 & \cdots & -1 & 1 & 1 \\
+-1 & -1 & -1 & \cdots & -1 & -1 & 1
+\end{array}\right)
+$$
+
+(a) Reduce $\mathbf{W}_{n}$ to an upper-triangular form using Gaussian elimination with partial pivoting, and determine the element of maximal magnitude that emerges during the elimination procedure.
+
+::: {.solutions .content-show when-profile="solutions"}
+(Meyer 1.5.7)
+$2^{n-1}$
+:::
+
+# 
+
+Answer True/False and explain your answers:
+1. If a linear system is inconsistent, then the rank of the augmented matrix exceeds the number of unknowns.
+2. Any homogeneous linear system is consistent.
+3. A system of 3 linear equations in 4 unknowns has infinitely many solutions.
+4. Every matrix can be reduced to only one matrix in row echelon form.
+5. Any homogeneous linear system with more equations than unknowns has a nontrivial solution.
+
+::: {.solutions .content-show when-profile="solutions"}
+(Shores 1.4.19)
+
+(a) False. One very simple counterexample: $0 x=1$. 
+
+Another: $\left[\begin{array}{ll}1 & 1 \\ 1 & 1\end{array}\right]\left[\begin{array}{l}x_{1} \\ x_{2}\end{array}\right]=\left[\begin{array}{l}1 \\ 2\end{array}\right]$. The rank of the augmented matrix is 2, but the system is inconsistent.
+
+We know that $b$ must not be a linear combination of the columns of $A$ for the system to be inconsistent; however, there is no requirement that the columns of $A$ be linearly independent. Therefore the rank of the augmented matrix could be less than the number of unknowns.
+
+
+(b) True, a homogeneous system must have the trivial solution.
+(c) False, it could be inconsistent (and therefore have zero solutions).
+(d) False. Here is a counterexample. The matrix $\left[\begin{array}{ll}2 & 2 \\ 0 & 1\end{array}\right]$ can be reduced to either $\left[\begin{array}{ll}2 & 0 \\ 0 & 1\end{array}\right]$ or $\left[\begin{array}{ll}1 & 0 \\ 0 & 1\end{array}\right]$. (Only the latter is in *reduced* row echelon form, which must be unique.)
+(e) False, a counterexample is $\left[\begin{array}{l}1 \\ 2\end{array}\right] x=\left[\begin{array}{l}0 \\ 0\end{array}\right]$.
+:::

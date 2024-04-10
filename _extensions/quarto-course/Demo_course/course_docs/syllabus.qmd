@@ -1,0 +1,108 @@
+---
+title: Syllabus
+callout-appearance: minimal
+toc: true
+embed-resources: true
+format: html
+---
+
+# Topics 
+(Subject to change)
+
+| Week  | Topics  | Reading |
+|---|---| --- |
+|1   | Linear Systems of Equations  | Ch. 1 |
+| 2 | Matrix math | 1.3-1.4, 2.1-2.3 |
+| 3 | Matrix math, continued | 2.3-2.5 |
+| 4 | ** No class on Monday, April 8 ** Factorization | 2.8 |
+| 5 | Vector spaces? Least Squares | 3, 4.2 |
+| 6 | Computer graphics, QR factorization | 4.2, 4.4 |
+| 7 | Data compression, wavelets, discrete dynamical systems | 4.4, 5.3 |
+| 8 | PCA, SVD | 5.4, 5.6 |
+| 9 | Fourier Transform | 6.6 |
+
+
+# Course Info
+
+
+
+## Textbook:
+
+Our textbook is [Applied Linear Algebra and Matrix Analysis](https://link.springer.com/book/10.1007/978-3-319-74748-4), 2nd Ed, by Thomas Shores. You can download this textbook for free from the Springer website.
+
+
+
+## Course components:
+
+### Weekly homework (problem sets)
+These will be graded with a standard point scale.
+
+### Three "project packs".
+For each pack, you'll choose 3 of 4 mini projects to complete. Projects are slightly longer and more open-ended than homework problems. Projects will be graded on an ESMU scale. (This stands for **E**xcellent, **M**eets Expectations, **R**evision necessary, and **U**ngradeable.) 
+
+For each of the first two project packs, you'll have the chance to revise and resubmit up to two projects, so long as they were initially graded with an **M** or **R**. For the third project pack, you won't be able to revise and resubmit projects (because this will be due at the end of the quarter).
+
+### Final exam
+There will be a final exam during exam week, in two parts. The first part will be similar to the problems in the problem sets. The second part will be a critical analysis of some applications. You'll have to suggest directions that you might take in an analysis and look for potential weaknesses in a provided analysis. However, if you've gotten at least two Es on your project packs, you won't have to take the final exam.
+
+We will not have a midterm exam.
+
+# Grading Etc
+
+## Course grading
+The final grade will be determined by the following weights:
+
+- Problem sets: 20%
+- First part of final exam: 15%
+- Second part of final exam: 15% OR skipped.
+- Project packs: 50% OR 65% if the second part of the final exam is skipped.
+
+
+
+::: {.callout-note collapse="true"}
+### Grading details
+
+Project pack grades are calculated as follows. There are 90 points possible in the project packs, 10 for each project that you complete. 
+
+You'll get 10 points for an E or M grade, and 5 points for an R grade. You'll get 0 points for a U grade. If you revise and resubmit, you'll get the full points for the grade you receive on the resubmission. If you have at least two E's from the first two project packs, you may choose to skip the second part of the final exam; in this case, the project packs will be worth 65% of the final grade.
+
+The grading for the final project pack will be done differently. You'll still get 10 points for an E or an M. However, if you get an R on one project and an E on another, the E can be used to bring the R up to an M. So if your grades are E, R, M, this would be changed to M, M, M, for full credit. If your grades are M, R, R, you'd get 20/30 points for this project pack. If your grades are E, R, R, this would be changed to M, M, R, and you'd get 25/30 points. If you get an E on one project and a U on another, the E can be used to bring the U up to an R.
+:::
+
+
+
+
+::: {.callout-note collapse="true" appearance="minimal"}
+### Grading examples
+
+Let's look at two example students.
+
+Student A has the following grades going into the final exam:
+Problem sets: 90%
+Project Pack 1: E, S, S (after revision) -> 30/30
+Project Pack 2: E, E, S (after revision) -> 30/30
+
+The student chooses to skip the second part of the final exam.
+
+Her grade on the first part of the final exam is 80%.
+Her grades for the third Project Pack are R, E, R. -> 25/30.
+
+When combined, this student's project pack grades are 85/90, or 94.4%.
+
+Her final course grade is 94.4*0.65+90*.20+80*.15 = 91.36%.
+
+Student B has the following grades going into the final exam:
+Problem sets: 80%
+Project Pack 1: E, S, R (after revision) -> 25/30
+Project Pack 2: S, R, R (after revision) -> 20/30
+
+This student does not have the option to skip the second part of the final exam.
+
+Her grade on the first part of the final exam is 87%.
+Her grade on the second part of the final exam is 90%.
+Her grade on the third project pack is E, R, R, which becomes S, S, R, for 25/30.
+
+When combined, this student's project pack grades are 70/90, or 77.8%.
+
+Her final course grade is 77.8*0.50+80*.20+87*.15+90*.15 = 81.45%.
+:::

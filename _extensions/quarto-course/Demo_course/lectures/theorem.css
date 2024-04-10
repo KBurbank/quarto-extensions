@@ -1,0 +1,8 @@
+.theorem {
+    background-color: lightgray;
+}
+
+.theorem::before {
+    content: "Theorem:";
+    font-weight: 600;
+}
