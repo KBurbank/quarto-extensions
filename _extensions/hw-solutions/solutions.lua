@@ -14,9 +14,15 @@ function Div(el)
   return el
 end
 
-function Meta(meta)
 
+
+
+
+function Meta(meta)
+    -- check that the title is not nil
+    if meta.title then
         local title = pandoc.utils.stringify(meta.title)
         meta.title=title .. " Solutions"
+    end
     return meta
 end
