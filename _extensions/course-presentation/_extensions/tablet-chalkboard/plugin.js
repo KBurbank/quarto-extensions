@@ -132,6 +132,10 @@ const initChalkboard = function (Reveal) {
 	{
 		color: 'rgba(255,220,0,1)',
 		cursor: ""
+	},
+	{
+		color: 'rgba(255,255,255,1)',
+		cursor: ""
 	}
 	];
 	var chalks = [{
@@ -1572,9 +1576,13 @@ const initChalkboard = function (Reveal) {
 				var touch = evt.touches[0];
 				mouseX = touch.pageX - revealDiv.offsetLeft;
 				mouseY = touch.pageY - revealDiv.offsetTop;
-				saveInitial(mouseX, mouseY)
+				saveInitial(mouseX, mouseY);
+				if (color[mode] == 7) {
+					startErasing((mouseX - xOffset) / scale, (mouseY - yOffset) / scale);
+				} else {
 				startDrawing((mouseX - xOffset) / scale, (mouseY - yOffset) / scale);
 				touchTimeout = setTimeout(startErasing, 1000, (mouseX - xOffset) / scale, (mouseY - yOffset) / scale);
+				}
 			}
 		}, passiveSupported ? {
 			passive: false
@@ -1691,8 +1699,8 @@ const initChalkboard = function (Reveal) {
 
 				mouseX = evt.pageX - revealDiv.offsetLeft;
 				mouseY = evt.pageY - revealDiv.offsetTop;
-
-				if (evt.button == 2 || evt.button == 1 || evt.shiftKey) {
+				console.log(color[mode]);
+				if (evt.button == 2 || evt.button == 1 || evt.shiftKey|| (color[mode] == 7)) {
 					startErasing((mouseX - xOffset) / scale, (mouseY - yOffset) / scale);
 					// broadcast
 					var message = new CustomEvent(messageType);
