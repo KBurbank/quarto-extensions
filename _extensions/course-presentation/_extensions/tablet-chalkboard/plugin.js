@@ -545,7 +545,7 @@ const initChalkboard = function (Reveal) {
 		canvas.height = drawingCanvas[id].height;
 		canvas.setAttribute('data-chalkboard', id);
 		//	canvas.style.cursor = pens[ id ][ color[ id ] ].cursor;
-		$('canvas').awesomeCursor('pencil', { flip: 'vertical', color: pens[id][color[id]].color });
+		setPenOrEraserCursor(mode,color);
 
 		container.appendChild(canvas);
 		drawingCanvas[id].canvas = canvas;
@@ -1182,11 +1182,7 @@ const initChalkboard = function (Reveal) {
 		if (index >= pens[mode].length) index = 0;
 		color[mode] = index;
 		//	drawingCanvas[ mode ].canvas.style.cursor = pens[ mode ][ color[ mode ] ].cursor;
-		if (index == 7){
-			$('canvas').awesomeCursor('eraser', { color: 'rgba(0,0,0,0.5)' });
-		} else {
-		$('canvas').awesomeCursor('pencil', { flip: 'vertical', color: pens[mode][color[mode]].color });
-	}
+		setPenOrEraserCursor(mode, color);
 	}
 
 	/**
@@ -1777,7 +1773,8 @@ const initChalkboard = function (Reveal) {
 		canvas.addEventListener('mouseup', function (evt) {
 			evt.preventDefault();
 			//		drawingCanvas[ mode ].canvas.style.cursor = pens[ mode ][ color[ mode ] ].cursor;
-			$('canvas').awesomeCursor('pencil', { flip: 'vertical', color: pens[mode][color[mode]].color });
+			setPenOrEraserCursor(mode, color);
+		//	$('canvas').awesomeCursor('pencil', { flip: 'vertical', color: pens[mode][color[mode]].color });
 
 			if (drawing || erasing) {
 				stopDrawing();
@@ -2134,3 +2131,16 @@ const initChalkboard = function (Reveal) {
 
 	return this;
 };
+function setPenOrEraserCursor(mode, color) {
+	if( mode == null)
+	{
+		mode = 0;
+	}
+
+	if (color[mode] == 7) {
+		$('canvas').awesomeCursor('eraser', { color: 'rgba(0,0,0,0.5)' });
+	} else {
+		$('canvas').awesomeCursor('pencil', { flip: 'vertical', color: pens[mode][color[mode]].color });
+	}
+}
+
