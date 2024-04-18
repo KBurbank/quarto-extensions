@@ -1182,8 +1182,11 @@ const initChalkboard = function (Reveal) {
 		if (index >= pens[mode].length) index = 0;
 		color[mode] = index;
 		//	drawingCanvas[ mode ].canvas.style.cursor = pens[ mode ][ color[ mode ] ].cursor;
+		if (index == 7){
+			$('canvas').awesomeCursor('eraser', { color: 'rgba(0,0,0,0.5)' });
+		} else {
 		$('canvas').awesomeCursor('pencil', { flip: 'vertical', color: pens[mode][color[mode]].color });
-
+	}
 	}
 
 	/**
