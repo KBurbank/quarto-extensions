@@ -14,6 +14,10 @@
  ** Compatibility with reveal.js v4 by Hakim El Hattab https://github.com/hakimel
  ******************************************************************/
 
+const CHALKBOARD_VERSION = '1.0.11';  // Update this version number when making changes
+
+console.log('Loading tablet-chalkboard plugin version ' + CHALKBOARD_VERSION + ' with max highlighter opacity 0.4');
+
 /* Only works if the fontawesome extension is installed and used at least once */
 
 window.RevealTabletChalkboard = window.RevealTabletChalkboard || {
@@ -1731,6 +1735,19 @@ const initChalkboard = function (Reveal) {
 
 	function setupCanvasEvents(canvas) {
 		var revealDiv = document.querySelector('.reveal');
+		// Add version display
+		var versionDisplay = document.createElement('div');
+		versionDisplay.style.position = 'fixed';
+		versionDisplay.style.top = '10px';
+		versionDisplay.style.left = '10px';
+		versionDisplay.style.zIndex = '1000';
+		versionDisplay.style.background = 'rgba(0,0,0,0.5)';
+		versionDisplay.style.color = 'white';
+		versionDisplay.style.padding = '5px';
+		versionDisplay.style.borderRadius = '5px';
+		versionDisplay.style.fontSize = '12px';
+		versionDisplay.innerHTML = 'Chalkboard v' + CHALKBOARD_VERSION;
+		document.body.appendChild(versionDisplay);
 
 		// TODO: check all touchevents
 		canvas.addEventListener('touchstart', function (evt) {
