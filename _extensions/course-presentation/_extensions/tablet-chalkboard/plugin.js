@@ -3,7 +3,7 @@
  **
  ** A plugin for reveal.js adding a chalkboard, modified to work well with a stylus
  **
- ** Version: 1.0.0
+ ** Version: 1.0.1
  **
  ** License: MIT license (see LICENSE.md)
  **
@@ -14,7 +14,7 @@
  ** Compatibility with reveal.js v4 by Hakim El Hattab https://github.com/hakimel
  ******************************************************************/
 
-const CHALKBOARD_VERSION = '1.0.11';  // Update this version number when making changes
+const CHALKBOARD_VERSION = '1.0.12';  // Update this version number when making changes
 
 console.log('Loading tablet-chalkboard plugin version ' + CHALKBOARD_VERSION + ' with max highlighter opacity 0.4');
 
@@ -93,10 +93,20 @@ const initChalkboard = function (Reveal) {
 		}));
 	} catch (err) { }
 
-	// Add clear all annotations to tools menu
-	var MenuItem = document.createElement('li');
-	MenuItem.innerHTML = '<a href="#" onclick="if (confirm(\'Are you sure you want to clear ALL annotations from ALL slides? This cannot be undone.\')) { RevealTabletChalkboard.resetAll(true); return false; }"><i class="fa fa-trash"></i> Clear All Annotations</a>';
-	document.querySelector('.reveal .slide-menu-button').parentNode.querySelector('ul').appendChild(MenuItem);
+    document.body.style.userSelect = 'none';
+    document.body.style.webkitUserSelect = 'none';
+    document.body.style.msUserSelect = 'none';
+    document.body.style.mozUserSelect = 'none';
+    document.body.style.webkitTouchCallout = 'none';
+    document.body.style.pointerEvents = 'auto';
+
+	// Add clear all annotations to tools menu if it exists
+	var menuButton = document.querySelector('.reveal .slide-menu-button');
+	if (menuButton && menuButton.parentNode) {
+		var MenuItem = document.createElement('li');
+		MenuItem.innerHTML = '<a href="#" onclick="if (confirm(\'Are you sure you want to clear ALL annotations from ALL slides? This cannot be undone.\')) { RevealTabletChalkboard.resetAll(true); return false; }"><i class="fa fa-trash"></i> Clear All Annotations</a>';
+		menuButton.parentNode.querySelector('ul').appendChild(MenuItem);
+	}
 
 	/*****************************************************************
 	 ** Configuration
@@ -1216,6 +1226,25 @@ const initChalkboard = function (Reveal) {
 		drawingCanvas[1].sponge.style.visibility = 'hidden'; // make sure that the sponge from touch events is hidden
 		drawingCanvas[1].container.style.opacity = 1;
 		drawingCanvas[1].container.style.visibility = 'visible';
+		
+		// Prevent text selection across all browsers
+		const reveal = document.querySelector('.reveal');
+		reveal.style.userSelect = 'none';
+		reveal.style.webkitUserSelect = 'none';
+		reveal.style.msUserSelect = 'none';
+		reveal.style.mozUserSelect = 'none';
+		reveal.style.webkitTouchCallout = 'none';
+		
+		// Also apply to slides container
+		const slides = document.querySelector('.reveal .slides');
+		if (slides) {
+			slides.style.userSelect = 'none';
+			slides.style.webkitUserSelect = 'none';
+			slides.style.msUserSelect = 'none';
+			slides.style.mozUserSelect = 'none';
+			slides.style.webkitTouchCallout = 'none';
+		}
+		
 		mode = 1;
 	}
 
@@ -1230,6 +1259,25 @@ const initChalkboard = function (Reveal) {
 		drawingCanvas[1].sponge.style.visibility = 'hidden'; // make sure that the sponge from touch events is hidden
 		drawingCanvas[1].container.style.opacity = 0;
 		drawingCanvas[1].container.style.visibility = 'hidden';
+		
+		// Re-enable text selection
+		const reveal = document.querySelector('.reveal');
+		reveal.style.userSelect = '';
+		reveal.style.webkitUserSelect = '';
+		reveal.style.msUserSelect = '';
+		reveal.style.mozUserSelect = '';
+		reveal.style.webkitTouchCallout = '';
+		
+		// Also for slides container
+		const slides = document.querySelector('.reveal .slides');
+		if (slides) {
+			slides.style.userSelect = '';
+			slides.style.webkitUserSelect = '';
+			slides.style.msUserSelect = '';
+			slides.style.mozUserSelect = '';
+			slides.style.webkitTouchCallout = '';
+		}
+		
 		lastX = null;
 		lastY = null;
 		mode = 0;
@@ -2006,12 +2054,12 @@ const initChalkboard = function (Reveal) {
 		if (!printMode) {
 			window.addEventListener('resize', resize);
 
-			// Add clear all annotations to tools menu
-			var menuParent = document.querySelector('.reveal .tool-menu-button')?.parentNode?.querySelector('ul');
-			if (menuParent) {
+			// Add clear all annotations to tools menu if it exists
+			var menuButton = document.querySelector('.reveal .slide-menu-button');
+			if (menuButton && menuButton.parentNode) {
 				var MenuItem = document.createElement('li');
 				MenuItem.innerHTML = '<a href="#" onclick="if (confirm(\'Are you sure you want to clear ALL annotations from ALL slides? This cannot be undone.\')) { RevealTabletChalkboard.resetAll(true); return false; }"><i class="fa fa-trash"></i> Clear All Annotations</a>';
-				menuParent.appendChild(MenuItem);
+				menuButton.parentNode.querySelector('ul').appendChild(MenuItem);
 			}
 
 			slideStart = Date.now() - getSlideDuration();
