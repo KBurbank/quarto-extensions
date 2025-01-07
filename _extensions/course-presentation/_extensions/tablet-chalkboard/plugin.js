@@ -14,7 +14,7 @@
  ** Compatibility with reveal.js v4 by Hakim El Hattab https://github.com/hakimel
  ******************************************************************/
 
-const CHALKBOARD_VERSION = '1.0.12';  // Update this version number when making changes
+const CHALKBOARD_VERSION = '1.0.18';  // Update this version number when making changes
 
 console.log('Loading tablet-chalkboard plugin version ' + CHALKBOARD_VERSION + ' with max highlighter opacity 0.4');
 
@@ -100,13 +100,6 @@ const initChalkboard = function (Reveal) {
     document.body.style.webkitTouchCallout = 'none';
     document.body.style.pointerEvents = 'auto';
 
-	// Add clear all annotations to tools menu if it exists
-	var menuButton = document.querySelector('.reveal .slide-menu-button');
-	if (menuButton && menuButton.parentNode) {
-		var MenuItem = document.createElement('li');
-		MenuItem.innerHTML = '<a href="#" onclick="if (confirm(\'Are you sure you want to clear ALL annotations from ALL slides? This cannot be undone.\')) { RevealTabletChalkboard.resetAll(true); return false; }"><i class="fa fa-trash"></i> Clear All Annotations</a>';
-		menuButton.parentNode.querySelector('ul').appendChild(MenuItem);
-	}
 
 	/*****************************************************************
 	 ** Configuration
@@ -478,23 +471,7 @@ const initChalkboard = function (Reveal) {
 		});
 		list.appendChild(clearButton);
 
-		// Add clear all button
-		var clearAllButton = document.createElement('li');
-		clearAllButton.innerHTML = '<i class="fa fa-trash"></i>';
-		clearAllButton.style.color = '#666666';
-		clearAllButton.addEventListener('click', function() {
-			if (confirm("Are you sure you want to clear ALL annotations from ALL slides? This cannot be undone.")) {
-				resetStorage(true);
-				startPlayback(0, mode);
-			}
-		});
-		clearAllButton.addEventListener('touchstart', function() {
-			if (confirm("Are you sure you want to clear ALL annotations from ALL slides? This cannot be undone.")) {
-				resetStorage(true);
-				startPlayback(0, mode);
-			}
-		});
-		list.appendChild(clearAllButton);
+	
 
 		// Add undo button
 		var undoButton = document.createElement('li');
@@ -2054,12 +2031,13 @@ const initChalkboard = function (Reveal) {
 		if (!printMode) {
 			window.addEventListener('resize', resize);
 
-			// Add clear all annotations to tools menu if it exists
-			var menuButton = document.querySelector('.reveal .slide-menu-button');
-			if (menuButton && menuButton.parentNode) {
-				var MenuItem = document.createElement('li');
-				MenuItem.innerHTML = '<a href="#" onclick="if (confirm(\'Are you sure you want to clear ALL annotations from ALL slides? This cannot be undone.\')) { RevealTabletChalkboard.resetAll(true); return false; }"><i class="fa fa-trash"></i> Clear All Annotations</a>';
-				menuButton.parentNode.querySelector('ul').appendChild(MenuItem);
+			// Add clear all annotations to tools menu
+			var toolsMenu = document.querySelector('.slide-menu-items');
+			if (toolsMenu) {
+				var menuItem = document.createElement('li');
+				menuItem.className = 'slide-tool-item';
+				menuItem.innerHTML = '<a href="#" onclick="if (confirm(\'Are you sure you want to clear ALL annotations from ALL slides? This cannot be undone.\')) { RevealTabletChalkboard.resetAll(true); return false; }"><i class="fa fa-trash"></i> Clear All Annotations</a>';
+				toolsMenu.appendChild(menuItem);
 			}
 
 			slideStart = Date.now() - getSlideDuration();
