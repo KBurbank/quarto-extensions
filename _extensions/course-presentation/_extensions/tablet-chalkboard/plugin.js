@@ -89,6 +89,10 @@ const initChalkboard = function (Reveal) {
 		}));
 	} catch (err) { }
 
+	// Add clear all annotations to tools menu
+	var MenuItem = document.createElement('li');
+	MenuItem.innerHTML = '<a href="#" onclick="if (confirm(\'Are you sure you want to clear ALL annotations from ALL slides? This cannot be undone.\')) { RevealTabletChalkboard.resetAll(true); return false; }"><i class="fa fa-trash"></i> Clear All Annotations</a>';
+	document.querySelector('.reveal .slide-menu-button').parentNode.querySelector('ul').appendChild(MenuItem);
 
 	/*****************************************************************
 	 ** Configuration
@@ -136,6 +140,22 @@ const initChalkboard = function (Reveal) {
 	{
 		color: 'rgba(255,255,255,1)',
 		cursor: ""
+	},
+	// Add highlighter colors with transparency
+	{
+		color: 'rgba(255,255,0,0.5)',  // Yellow highlighter
+		cursor: "rgba(255,255,0,1)",   // Solid cursor color
+		isHighlighter: true
+	},
+	{
+		color: 'rgba(0,255,0,0.3)',    // Green highlighter
+		cursor: "rgba(0,255,0,1)",     // Solid cursor color
+		isHighlighter: true
+	},
+	{
+		color: 'rgba(255,182,193,0.5)', // Pink highlighter
+		cursor: "rgba(255,182,193,1)",  // Solid cursor color
+		isHighlighter: true
 	}
 	];
 	var chalks = [{
@@ -398,7 +418,7 @@ const initChalkboard = function (Reveal) {
 		var revealFooter = document.querySelector('.reveal-footer')
 
 		if (!revealFooter) {
-				revealFooter = revealDiv;
+			revealFooter = revealDiv;
 		}
 		if (length === true || length > colors.length) {
 			length = colors.length;
@@ -443,6 +463,24 @@ const initChalkboard = function (Reveal) {
 			clearCurrentSlide();
 		});
 		list.appendChild(clearButton);
+
+		// Add clear all button
+		var clearAllButton = document.createElement('li');
+		clearAllButton.innerHTML = '<i class="fa fa-trash"></i>';
+		clearAllButton.style.color = '#666666';
+		clearAllButton.addEventListener('click', function() {
+			if (confirm("Are you sure you want to clear ALL annotations from ALL slides? This cannot be undone.")) {
+				resetStorage(true);
+				startPlayback(0, mode);
+			}
+		});
+		clearAllButton.addEventListener('touchstart', function() {
+			if (confirm("Are you sure you want to clear ALL annotations from ALL slides? This cannot be undone.")) {
+				resetStorage(true);
+				startPlayback(0, mode);
+			}
+		});
+		list.appendChild(clearAllButton);
 
 		// Add undo button
 		var undoButton = document.createElement('li');
@@ -1077,15 +1115,43 @@ const initChalkboard = function (Reveal) {
 	 ** Drawings
 	 ******************************************************************/
 
-	function drawWithBoardmarker(context, fromX, fromY, toX, toY, colorIdx) {
+	function drawWithBoardmarker(context, fromX, fromY, toX, toY, colorIdx, pressure = 1.0) {
 		if (colorIdx == undefined) colorIdx = color[mode];
-		context.lineWidth = boardmarkerWidth;
+		
+		// Check if this is a highlighter color
+		const isHighlighter = boardmarkers[colorIdx].isHighlighter;
+		
+		// Adjust line width based on pressure and tool type
+		var width = isHighlighter ? 
+			boardmarkerWidth * 8 * (0.5 + pressure * 0.5) : // Much wider for highlighter (8x instead of 4x)
+			boardmarkerWidth * (0.5 + pressure * 0.5);      // Normal width for regular marker
+		
+		context.lineWidth = width;
 		context.lineCap = 'round';
+		context.lineJoin = 'round';
 		context.strokeStyle = boardmarkers[colorIdx].color;
+		
+		// Set composite operation for highlighter effect
+		if (isHighlighter) {
+			context.globalCompositeOperation = 'multiply';
+		}
+		
+		// Enable line smoothing
+		context.shadowBlur = isHighlighter ? 0 : width / 4; // No shadow for highlighter
+		context.shadowColor = boardmarkers[colorIdx].color;
+		
 		context.beginPath();
 		context.moveTo(fromX, fromY);
 		context.lineTo(toX, toY);
 		context.stroke();
+		
+		// Reset composite operation
+		if (isHighlighter) {
+			context.globalCompositeOperation = 'source-over';
+		}
+		
+		// Reset shadow for other operations
+		context.shadowBlur = 0;
 	}
 
 	function drawWithChalk(context, fromX, fromY, toX, toY, colorIdx) {
@@ -1611,7 +1677,7 @@ const initChalkboard = function (Reveal) {
 
 	}
 
-	function drawSegment(fromX, fromY, toX, toY, colorIdx) {
+	function drawSegment(fromX, fromY, toX, toY, colorIdx, pressure) {
 		var ctx = drawingCanvas[mode].context;
 		var scale = drawingCanvas[mode].scale;
 		var xOffset = drawingCanvas[mode].xOffset;
@@ -1623,7 +1689,8 @@ const initChalkboard = function (Reveal) {
 			x1: fromX,
 			y1: fromY,
 			x2: toX,
-			y2: toY
+			y2: toY,
+			pressure: pressure
 		});
 
 		if (
@@ -1636,7 +1703,15 @@ const initChalkboard = function (Reveal) {
 			toX * scale + xOffset < drawingCanvas[mode].width &&
 			toY * scale + yOffset < drawingCanvas[mode].height
 		) {
-			draw[mode](ctx, fromX * scale + xOffset, fromY * scale + yOffset, toX * scale + xOffset, toY * scale + yOffset, colorIdx);
+			draw[mode](
+				ctx, 
+				fromX * scale + xOffset, 
+				fromY * scale + yOffset, 
+				toX * scale + xOffset, 
+				toY * scale + yOffset, 
+				colorIdx,
+				pressure
+			);
 		}
 	}
 
@@ -1822,23 +1897,22 @@ const initChalkboard = function (Reveal) {
 				mouseY = evt.pageY - revealDiv.offsetTop;
 
 				if (drawing) {
-					drawSegment((lastX - xOffset) / scale, (lastY - yOffset) / scale, (mouseX - xOffset) / scale, (mouseY - yOffset) / scale, color[mode]);
-					// broadcast
-					var message = new CustomEvent(messageType);
-					message.content = {
-						sender: 'chalkboard-plugin',
-						type: 'draw',
-						timestamp: Date.now() - slideStart,
-						mode,
-						board,
-						fromX: (lastX - xOffset) / scale,
-						fromY: (lastY - yOffset) / scale,
-						toX: (mouseX - xOffset) / scale,
-						toY: (mouseY - yOffset) / scale,
-						color: color[mode]
-					};
-					document.dispatchEvent(message);
+					// Use pressure and tilt for Apple Pencil
+					let pressure = evt.pressure || 1.0;
+					if (evt.tiltX || evt.tiltY) {
+						// Adjust pressure based on tilt for more natural feel
+						let tilt = Math.sqrt(evt.tiltX * evt.tiltX + evt.tiltY * evt.tiltY) / 90;
+						pressure = pressure * (1 - tilt * 0.2);
+					}
 
+					drawSegment(
+						(lastX - xOffset) / scale,
+						(lastY - yOffset) / scale,
+						(mouseX - xOffset) / scale,
+						(mouseY - yOffset) / scale,
+						color[mode],
+						pressure
+					);
 					lastX = mouseX;
 					lastY = mouseY;
 				} else {
@@ -1909,6 +1983,14 @@ const initChalkboard = function (Reveal) {
 		//console.log('ready');
 		if (!printMode) {
 			window.addEventListener('resize', resize);
+
+			// Add clear all annotations to tools menu
+			var menuParent = document.querySelector('.reveal .tool-menu-button')?.parentNode?.querySelector('ul');
+			if (menuParent) {
+				var MenuItem = document.createElement('li');
+				MenuItem.innerHTML = '<a href="#" onclick="if (confirm(\'Are you sure you want to clear ALL annotations from ALL slides? This cannot be undone.\')) { RevealTabletChalkboard.resetAll(true); return false; }"><i class="fa fa-trash"></i> Clear All Annotations</a>';
+				menuParent.appendChild(MenuItem);
+			}
 
 			slideStart = Date.now() - getSlideDuration();
 			slideIndices = Reveal.getIndices();
