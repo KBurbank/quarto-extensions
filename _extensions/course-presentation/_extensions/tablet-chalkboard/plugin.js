@@ -395,6 +395,8 @@ const initChalkboard = function (Reveal) {
 
 	var mode = 0; // 0: notes canvas, 1: chalkboard
 	var board = 0; // board index (only for chalkboard)
+	var smoothingPoints = []; // Store points for smoothing
+	var smoothingAmount = 3; // Number of points to use for smoothing
 
 	var mouseX = 0;
 	var mouseY = 0;
@@ -1157,6 +1159,7 @@ const initChalkboard = function (Reveal) {
 		var brushDiameter = chalkWidth * (0.5 + pressure * 2); // Scale pressure effect for more variation
 		context.lineWidth = brushDiameter;
 		context.lineCap = 'round';
+		context.lineJoin = 'round';
 		context.fillStyle = chalks[colorIdx].color;
 		context.strokeStyle = chalks[colorIdx].color;
 		var opacity = 1.0;
@@ -1164,7 +1167,22 @@ const initChalkboard = function (Reveal) {
 		
 		context.beginPath();
 		context.moveTo(fromX, fromY);
-		context.lineTo(toX, toY);
+		
+		// Enhanced smoothing with better control points
+		const dx = toX - fromX;
+		const dy = toY - fromY;
+		const midX = fromX + dx * 0.5;
+		const midY = fromY + dy * 0.5;
+		
+		// Use control points perpendicular to the line direction for more smoothing
+		const perpX = -dy * 0.2;  // Increased from default 0.1 to 0.2 for more smoothing
+		const perpY = dx * 0.2;   // Increased from default 0.1 to 0.2 for more smoothing
+		
+		context.bezierCurveTo(
+			fromX + perpX, fromY + perpY,
+			toX + perpX, toY + perpY,
+			toX, toY
+		);
 		context.stroke();
 		
 		// Chalk Effect
