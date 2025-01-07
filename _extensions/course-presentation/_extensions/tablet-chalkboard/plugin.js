@@ -144,10 +144,6 @@ const initChalkboard = function (Reveal) {
 		color: 'rgba(255,220,0,1)',
 		cursor: ""
 	},
-	{
-		color: 'rgba(255,255,255,1)',
-		cursor: ""
-	},
 	// Add highlighter colors with transparency
 	{
 		color: 'rgba(255,255,0,0.5)',  // Yellow highlighter
@@ -163,6 +159,10 @@ const initChalkboard = function (Reveal) {
 		color: 'rgba(255,182,193,0.5)', // Pink highlighter
 		cursor: "rgba(255,182,193,1)",  // Solid cursor color
 		isHighlighter: true
+	},
+	{
+		color: 'rgba(255,255,255,1)',  // Eraser (white)
+		cursor: ""
 	}
 	];
 	var chalks = [{
@@ -442,8 +442,13 @@ const initChalkboard = function (Reveal) {
 		for (var i = 0; i < length; i++) {
 			var colorButton = document.createElement('li');
 			colorButton.setAttribute('data-color', i);
-			colorButton.innerHTML = '<i class="fa fa-square"></i>';
-			colorButton.style.color = colors[i].color;
+			// Use eraser icon for white color (index 10), square for others
+			colorButton.innerHTML = (i === 10) ? '<i class="fa fa-eraser"></i>' : '<i class="fa fa-square"></i>';
+			// Use black color for eraser icon, actual color for others
+			colorButton.style.color = (i === 10) ? '#000000' : colors[i].color;
+			// Add margins to create visual groups
+			if (i === 7) colorButton.style.marginLeft = '20px';  // Space before highlighters
+			if (i === 10) colorButton.style.marginLeft = '20px';  // Space before eraser
 			colorButton.addEventListener('click', function (e) {
 				var element = e.target;
 				while (!element.hasAttribute('data-color')) {
@@ -463,8 +468,9 @@ const initChalkboard = function (Reveal) {
 
 		// Add clear slide button
 		var clearButton = document.createElement('li');
-		clearButton.innerHTML = '<i class="fa fa-eraser"></i>';
+		clearButton.innerHTML = '<i class="fa fa-trash"></i>';
 		clearButton.style.color = '#666666';
+		clearButton.style.marginLeft = '20px';  // Add space after eraser
 		clearButton.addEventListener('click', function() {
 			clearCurrentSlide();
 		});
@@ -1718,6 +1724,17 @@ const initChalkboard = function (Reveal) {
 		var scale = drawingCanvas[mode].scale;
 		var xOffset = drawingCanvas[mode].xOffset;
 		var yOffset = drawingCanvas[mode].yOffset;
+		
+		// Draw initial point
+		draw[mode](
+			ctx,
+			x * scale + xOffset,
+			y * scale + yOffset,
+			x * scale + xOffset,
+			y * scale + yOffset,
+			color[mode]
+		);
+		
 		lastX = x * scale + xOffset;
 		lastY = y * scale + yOffset;
 	}
@@ -1810,7 +1827,7 @@ const initChalkboard = function (Reveal) {
 				mouseX = touch.pageX - revealDiv.offsetLeft;
 				mouseY = touch.pageY - revealDiv.offsetTop;
 				saveInitial(mouseX, mouseY);
-				if (color[mode] == 7) {
+				if (color[mode] == 10) {
 					startErasing((mouseX - xOffset) / scale, (mouseY - yOffset) / scale);
 				} else {
 				startDrawing((mouseX - xOffset) / scale, (mouseY - yOffset) / scale);
@@ -1943,7 +1960,7 @@ const initChalkboard = function (Reveal) {
 				mouseX = evt.pageX - revealDiv.offsetLeft;
 				mouseY = evt.pageY - revealDiv.offsetTop;
 				console.log(color[mode]);
-				if (evt.button == 2 || evt.button == 1 || evt.shiftKey|| (color[mode] == 7)) {
+				if (evt.button == 2 || evt.button == 1 || evt.shiftKey|| (color[mode] == 10)) {
 					startErasing((mouseX - xOffset) / scale, (mouseY - yOffset) / scale);
 					// broadcast
 					var message = new CustomEvent(messageType);
