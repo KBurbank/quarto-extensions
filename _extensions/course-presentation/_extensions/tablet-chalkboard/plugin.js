@@ -1150,20 +1150,23 @@ const initChalkboard = function (Reveal) {
 		context.shadowBlur = 0;
 	}
 
-	function drawWithChalk(context, fromX, fromY, toX, toY, colorIdx) {
+	function drawWithChalk(context, fromX, fromY, toX, toY, colorIdx, pressure = 1.0) {
 		if (colorIdx == undefined) colorIdx = color[mode];
-		var brushDiameter = chalkWidth;
+		
+		// Adjust line width based on pressure
+		var brushDiameter = chalkWidth * (0.5 + pressure * 2); // Scale pressure effect for more variation
 		context.lineWidth = brushDiameter;
 		context.lineCap = 'round';
-		context.fillStyle = chalks[colorIdx].color; // 'rgba(255,255,255,0.5)';
+		context.fillStyle = chalks[colorIdx].color;
 		context.strokeStyle = chalks[colorIdx].color;
-		/*var opacity = Math.min(0.8, Math.max(0,color[1].replace(/^.*,(.+)\)/,'$1') - 0.1)) + Math.random()*0.2;*/
 		var opacity = 1.0;
 		context.strokeStyle = context.strokeStyle.replace(/[\d\.]+\)$/g, opacity + ')');
+		
 		context.beginPath();
 		context.moveTo(fromX, fromY);
 		context.lineTo(toX, toY);
 		context.stroke();
+		
 		// Chalk Effect
 		var length = Math.round(Math.sqrt(Math.pow(toX - fromX, 2) + Math.pow(toY - fromY, 2)) / (5 / brushDiameter));
 		var xUnit = (toX - fromX) / length;
@@ -1827,7 +1830,16 @@ const initChalkboard = function (Reveal) {
 				}
 
 				if (drawing) {
-					drawSegment((lastX - xOffset) / scale, (lastY - yOffset) / scale, (mouseX - xOffset) / scale, (mouseY - yOffset) / scale, color[mode]);
+					// Get pressure from touch event for Apple Pencil
+					let pressure = touch.force || 1.0;
+					drawSegment(
+						(lastX - xOffset) / scale, 
+						(lastY - yOffset) / scale, 
+						(mouseX - xOffset) / scale, 
+						(mouseY - yOffset) / scale, 
+						color[mode],
+						pressure
+					);
 					// broadcast
 					var message = new CustomEvent(messageType);
 					message.content = {
@@ -1840,7 +1852,8 @@ const initChalkboard = function (Reveal) {
 						fromY: (lastY - yOffset) / scale,
 						toX: (mouseX - xOffset) / scale,
 						toY: (mouseY - yOffset) / scale,
-						color: color[mode]
+						color: color[mode],
+						pressure: pressure
 					};
 					document.dispatchEvent(message);
 
