@@ -8,6 +8,8 @@ if not os.getenv("QUARTO_PROJECT_RENDER_ALL"):
     print("Didn't render all")
    # exit()
 
+
+
 tmp_site_dir = os.getenv("QUARTO_PROJECT_OUTPUT_DIR")
 quarto_project_dir = os.getenv("QUARTO_PROJECT_DIR")
 if not tmp_site_dir or tmp_site_dir == quarto_project_dir or not quarto_project_dir:
@@ -41,7 +43,8 @@ for name in os.listdir(site_dir):
 for root, dirs, files in os.walk(site_dir):
     for file in files:
         if file.endswith(".qmd"):
-            os.remove(os.path.join(root, file))
+            pass
+ #           os.remove(os.path.join(root, file))
             
 # remove any empty directories within site_dir
 for root, dirs, files in os.walk(site_dir, topdown=False):

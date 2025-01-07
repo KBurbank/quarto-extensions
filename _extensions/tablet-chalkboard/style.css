@@ -1,0 +1,43 @@
+div.palette, div.boardhandle {
+  position: relative;
+/*
+  height: 260px;
+  margin: -130px 0 0 0px;
+*/  
+  height: 100%;
+  font-size: 24px;
+  border-radius: 2pxpx;
+  border: 1px solid rgba(128,128,128,.5);
+  background: rgba(128,128,128,.5); 
+  justify-self: right;
+}
+
+
+
+div.boardhandle {
+  right: -10px;
+  padding-right:10px;
+}
+
+div.palette > ul,
+div.boardhandle > ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+div.palette > ul > li,
+div.boardhandle > ul > li {
+  padding: 2px;
+  display: inline-block;
+}
+
+div.id1 {
+  display: none !important;
+}
+
+@media print {
+	div.palette, div.boardhandle, .chalkboard-button { 
+		display: none!important; 
+	}
+}

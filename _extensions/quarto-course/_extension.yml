@@ -7,6 +7,7 @@ contributes:
     project:
       type: website
       # post-render: ["scripts/fixnotes.py","scripts/move_files.py","scripts/make_listing.py","scripts/update_git.py"]
+      pre-render: ["scripts/move_qmd_files.py"]
       post-render: ["scripts/fixnotes.py","scripts/clean_site.py","scripts/make_listing_lecture_types.py","scripts/remove_not_ready.sh","scripts/update_git.py"]
       format: quarto-course
       output-dir: _site

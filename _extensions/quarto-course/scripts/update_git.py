@@ -1,5 +1,11 @@
 import yaml
 import os
+
+import sys
+print(sys.path)
+print(sys.executable)
+
+
 from git import Repo
 
 #if not os.getenv("QUARTO_PROJECT_RENDER_ALL"):

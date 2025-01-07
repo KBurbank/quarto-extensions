@@ -1,0 +1,10 @@
+div.solutions {
+border:none;
+background-color: lightgray;
+border-width:2px;
+}
+
+div.solutions::before{
+    content:"Solution: ";
+    font-weight: 700;
+}

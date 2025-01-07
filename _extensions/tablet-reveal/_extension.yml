@@ -1,0 +1,39 @@
+title: Tablet Reveal
+author: Kendra Burbank.
+version: 1.0.0
+
+contributes:
+  project:
+    project:
+      type: website
+      post-render: ["scripts/fixnotes.py","scripts/move_files.py","scripts/make_listing.py","scripts/update_git.py"]
+      format: tablet-reveal
+      output-dir: site_tmp
+    revealjs-plugins:
+     - tablet-chalkboard
+    format:
+      revealjs:
+          embedded: true
+          toc: true
+          toc-depth: 1
+          toc-title: "Outline for today"
+          header : ""
+          slide-level: 3
+          incremental: true
+          theme: [sky]
+          center: true
+          number-sections: false
+          number-depth: 2
+          smaller: true
+          show-notes: false
+          sub-title: true
+          slide-number: c
+          title-as-header: false
+          RevealTabletChalkboard:
+              theme: whiteboard
+          multiplex:
+              id: '088c3a9ce7c86f35'
+              secret: '17082113259002008212'
+    filters: 
+        - reveal-header
+        

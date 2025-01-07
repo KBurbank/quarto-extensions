@@ -11,7 +11,8 @@ contributes:
       toc: true
       filters:
         - no_solutions.lua
-      output-ext: nosol.html
+      template-partials: 
+      - title-metadata.html
     pdf: 
       include-in-header: 
         text: '\usepackage{mdframed}

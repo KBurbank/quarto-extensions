@@ -1,0 +1,43 @@
+.reveal-footer {
+  background-color: rgb(176, 189, 213);
+  margin: 0px !important;
+  position: static;
+  width: 100%;
+  color: white !important;
+  vertical-align: center;
+  flex: 0 0 100%;
+  flex-flow: row;
+  display: flex;
+}
+
+.footer-section {
+  flex: auto;
+}
+
+.reveal-footer p {
+  position: relative !important;
+  text-align: center;
+  font-size: max(12px, 2vw);
+}
+
+
+.slide-menu-button {
+  position: relative !important;
+  padding-right: 10px;
+  padding-top: -10px;
+  inset: auto;
+}
+
+
+.slide-menu-button a {
+  color: grey;
+  font-size: 24pt;
+}
+
+.chalkboard-button {
+  inset: auto !important;
+  position: relative !important;
+  fill: white;
+  padding-right: 10px;
+  padding-top: 10px;
+}

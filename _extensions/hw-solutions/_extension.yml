@@ -12,6 +12,8 @@ contributes:
       filters:
         - solutions.lua
       output-ext: sol.html
+      template-partials: 
+        - title-metadata.html
     pdf: 
       show-solutions: true
       include-in-header: 
