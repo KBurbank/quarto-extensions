@@ -1,23 +1,30 @@
 .reveal-footer {
   background-color: rgb(176, 189, 213);
-  margin: 0px !important;
-  position: static;
+  margin: 0 !important;
+  position: absolute;
+  bottom: 0;
+  left: 0;
   width: 100%;
   color: white !important;
-  vertical-align: center;
-  flex: 0 0 100%;
-  flex-flow: row;
   display: flex;
+  flex-direction: row;
+
+  box-sizing: border-box;
 }
 
+
 .footer-section {
-  flex: auto;
+  flex: 1;
+  margin: 0;
+  padding: 0;
 }
 
 .reveal-footer p {
   position: relative !important;
   text-align: center;
   font-size: max(12px, 2vw);
+  margin: 0;
+  padding: 0;
 }
 
 
