@@ -1372,31 +1372,46 @@ const initChalkboard = function (Reveal) {
 	}
 
 	function startPlayback(timestamp, finalMode) {
-		//console.log("playback " + timestamp );
-		slideStart = Date.now() - timestamp;
-		closeChalkboard();
+		// Remove timestamp offset calculation to avoid delays
+		slideStart = Date.now();
 		mode = 0;
 		board = 0;
+		
 		for (var id = 0; id < 2; id++) {
 			clearCanvas(id);
-
-	
-		var slideData = getSlideDataRange(slideIndices,id,slideStart);
-	
-		slideData.events.forEach(thisEvent => {
-			playEvent(id,thisEvent, timestamp);
-	//	timeouts[id].push(setTimeout(playEvent,0, id, thisEvent, timestamp));
-		});
-
+			// Get all events immediately without time filtering
+			var slideData = getSlideData(slideIndices, id);
 			
-		//console.log("Mode: " + finalMode + "/" + mode );
+			// Batch render all drawing events synchronously
+			if (slideData && slideData.events) {
+				slideData.events.forEach(event => {
+					if (event.type === 'draw') {
+						draw[id](
+							drawingCanvas[id].context,
+							event.x1 * drawingCanvas[id].scale + drawingCanvas[id].xOffset,
+							event.y1 * drawingCanvas[id].scale + drawingCanvas[id].yOffset,
+							event.x2 * drawingCanvas[id].scale + drawingCanvas[id].xOffset,
+							event.y2 * drawingCanvas[id].scale + drawingCanvas[id].yOffset,
+							event.color
+						);
+					} else if (event.type === 'erase') {
+						eraseWithSponge(
+							drawingCanvas[id].context,
+							event.x * drawingCanvas[id].scale + drawingCanvas[id].xOffset,
+							event.y * drawingCanvas[id].scale + drawingCanvas[id].yOffset
+						);
+					}
+				});
+			}
+		}
+
 		if (finalMode != undefined) {
 			mode = finalMode;
 		}
-		if (mode == 1) showChalkboard();
-		//console.log("playback (ok)");
+		if (mode == 1) {
+			showChalkboard();
+		}
 	}
-	};
 
 	function stopPlayback() {
 		//console.log("stopPlayback");
@@ -1834,61 +1849,39 @@ const initChalkboard = function (Reveal) {
 		}
 	});
 	Reveal.addEventListener('slidechanged', function (evt) {
-		//		clearTimeout( slidechangeTimeout );
-		console.log('slidechanged');
 		if (!printMode) {
-			slideStart = Date.now() - getSlideDuration();
+			slideStart = Date.now();
 			slideIndices = Reveal.getIndices();
 			closeChalkboard();
 			board = 0;
 			clearCanvas(0);
 			clearCanvas(1);
-			if (!playback) {
-				slidechangeTimeout = setTimeout(startPlayback, transition, getSlideDuration(), 0);
-			}
-			if (Reveal.isAutoSliding()) {
-				var event = new CustomEvent('startplayback');
-				event.timestamp = 0;
-				document.dispatchEvent(event);
-			}
+			// Remove transition delay and immediately start playback
+			startPlayback(0, 0);
 		}
 	});
 	Reveal.addEventListener('fragmentshown', function (evt) {
-		//		clearTimeout( slidechangeTimeout );
-		console.log('fragmentshown');
 		if (!printMode) {
-			slideStart = Date.now() - getSlideDuration();
+			slideStart = Date.now();
 			slideIndices = Reveal.getIndices();
 			closeChalkboard();
 			board = 0;
 			clearCanvas(0);
 			clearCanvas(1);
-			if (Reveal.isAutoSliding()) {
-				var event = new CustomEvent('startplayback');
-				event.timestamp = 0;
-				document.dispatchEvent(event);
-			} else if (!playback) {
-				startPlayback(getSlideDuration(), 0);
-				closeChalkboard();
-			}
+			// Immediately render without waiting
+			startPlayback(0, 0);
 		}
 	});
 	Reveal.addEventListener('fragmenthidden', function (evt) {
-		//		clearTimeout( slidechangeTimeout );
-		//console.log('fragmenthidden');
 		if (!printMode) {
-			slideStart = Date.now() - getSlideDuration();
+			slideStart = Date.now();
 			slideIndices = Reveal.getIndices();
 			closeChalkboard();
 			board = 0;
 			clearCanvas(0);
 			clearCanvas(1);
-			if (Reveal.isAutoSliding()) {
-				document.dispatchEvent(new CustomEvent('stopplayback'));
-			} else if (!playback) {
-				startPlayback(getSlideDuration());
-				closeChalkboard();
-			}
+			// Immediately render without waiting
+			startPlayback(0, 0);
 		}
 	});
 
