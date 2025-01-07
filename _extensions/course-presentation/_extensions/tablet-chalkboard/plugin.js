@@ -1129,11 +1129,16 @@ const initChalkboard = function (Reveal) {
 		context.lineWidth = width;
 		context.lineCap = 'round';
 		context.lineJoin = 'round';
-		context.strokeStyle = boardmarkers[colorIdx].color;
 		
-		// Set composite operation for highlighter effect
 		if (isHighlighter) {
-			context.globalCompositeOperation = 'multiply';
+			// For highlighters, start at 0.05 opacity and use source-over 
+			// This will allow strokes to build up to but not exceed 0.075
+			let color = boardmarkers[colorIdx].color;
+			let baseColor = color.substring(0, color.lastIndexOf(',')) + ',0.05)';
+			context.strokeStyle = baseColor;
+			context.globalCompositeOperation = 'source-over';
+		} else {
+			context.strokeStyle = boardmarkers[colorIdx].color;
 		}
 		
 		// Enable line smoothing
@@ -1145,8 +1150,8 @@ const initChalkboard = function (Reveal) {
 		context.lineTo(toX, toY);
 		context.stroke();
 		
-		// Reset composite operation
-		if (isHighlighter) {
+		// Reset composite operation if needed for non-highlighter operations
+		if (!isHighlighter) {
 			context.globalCompositeOperation = 'source-over';
 		}
 		
