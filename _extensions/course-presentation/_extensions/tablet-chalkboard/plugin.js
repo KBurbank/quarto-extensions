@@ -392,11 +392,13 @@ const initChalkboard = function (Reveal) {
 	var updateStorageTimeout = null;
 	var playback = false;
 
+	var lastClearedData = null; // Store last cleared annotations for undo
+
 	function createPalette(colors, length,id) {
 		var revealFooter = document.querySelector('.reveal-footer')
 
 		if (!revealFooter) {
-			revealFooter = revealDiv;
+				revealFooter = revealDiv;
 		}
 		if (length === true || length > colors.length) {
 			length = colors.length;
@@ -429,22 +431,96 @@ const initChalkboard = function (Reveal) {
 			});
 			list.appendChild(colorButton);
 		}
+
+		// Add clear slide button
+		var clearButton = document.createElement('li');
+		clearButton.innerHTML = '<i class="fa fa-eraser"></i>';
+		clearButton.style.color = '#666666';
+		clearButton.addEventListener('click', function() {
+			clearCurrentSlide();
+		});
+		clearButton.addEventListener('touchstart', function() {
+			clearCurrentSlide();
+		});
+		list.appendChild(clearButton);
+
+		// Add undo button
+		var undoButton = document.createElement('li');
+		undoButton.innerHTML = '<i class="fa fa-undo"></i>';
+		undoButton.style.color = '#666666';
+		undoButton.style.display = 'none'; // Initially hidden
+		undoButton.id = 'undo-button-' + id;
+		undoButton.addEventListener('click', function() {
+			undoClear();
+		});
+		undoButton.addEventListener('touchstart', function() {
+			undoClear();
+		});
+		list.appendChild(undoButton);
+
 		palette.appendChild(list);
 		return palette;
-	};
+	}
+
+	function clearCurrentSlide() {
+		// Store current slide data before clearing
+		lastClearedData = JSON.parse(JSON.stringify(getSlideData(slideIndices, mode))); // Deep copy
+		
+		// Clear the current slide
+		clearCanvas(mode);
+		resetSlideDrawings();
+		
+		// Show undo button
+		var undoButton = document.getElementById('undo-button-' + mode);
+		if (undoButton) {
+			undoButton.style.display = 'inline-block';
+		}
+	}
+
+	function undoClear() {
+		if (lastClearedData) {
+			// Find the index of the current slide data
+			var index = storage[mode].data.findIndex(item => 
+				item.slide.h === slideIndices.h && 
+				item.slide.v === slideIndices.v && 
+				item.slide.f === slideIndices.f
+			);
+			
+			if (index !== -1) {
+				// Replace the current slide data with the stored data
+				storage[mode].data[index] = lastClearedData;
+			} else {
+				// If no data exists for this slide, add it
+				storage[mode].data.push(lastClearedData);
+			}
+			
+			// Update storage and redraw
+			updateStorage();
+			startPlayback(0, mode);
+			
+			// Hide undo button
+			var undoButton = document.getElementById('undo-button-' + mode);
+			if (undoButton) {
+				undoButton.style.display = 'none';
+			}
+			
+			// Clear the stored data
+			lastClearedData = null;
+		}
+	}
 
 	function switchBoard(boardIdx) {
 		selectBoard(boardIdx, true);
 		// broadcast
 		var message = new CustomEvent(messageType);
-		message.content = {
-			sender: 'chalkboard-plugin',
-			type: 'selectboard',
-			timestamp: Date.now() - slideStart,
-			mode,
-			board
-		};
-		document.dispatchEvent(message);
+			message.content = {
+				sender: 'chalkboard-plugin',
+				type: 'selectboard',
+				timestamp: Date.now() - slideStart,
+				mode,
+				board
+			};
+			document.dispatchEvent(message);
 	}
 
 	function setupDrawingCanvas(id) {
