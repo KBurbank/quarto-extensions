@@ -570,21 +570,23 @@ const initChalkboard = function (Reveal) {
 		}
 
 
-		var revealDiv = document.querySelector('.reveal');
+		var slides = document.querySelector('.slides');
+
+		var scale = Reveal.getScale();
 		
 
 
-		drawingCanvas[id].width = revealDiv.clientWidth;
-		drawingCanvas[id].height = revealDiv.clientHeight;
-		drawingCanvas[id].scale = 1;
-		drawingCanvas[id].xOffset = revealDiv.offsetLeft;
-		drawingCanvas[id].yOffset = revealDiv.offsetTop;
-
-		//	drawingCanvas[ id ].width = window.innerWidth;
-		//	drawingCanvas[ id ].height = window.innerHeight;
-		//	drawingCanvas[ id ].scale = 1;
-		//	drawingCanvas[ id ].xOffset = 0;
-		//	drawingCanvas[ id ].yOffset = 0;
+		// Wait for Reveal to be ready
+		Reveal.addEventListener('ready', function() {
+			slides.appendChild(container);
+			var slideBounds = slides.getBoundingClientRect();
+			drawingCanvas[id].width = slideBounds.width;
+			drawingCanvas[id].height = slideBounds.height;
+			drawingCanvas[id].scale = 1;
+			drawingCanvas[id].xOffset = 0;
+			drawingCanvas[id].yOffset = 0;
+			drawingCanvas[id].scale = scale;
+		});
 
 		if (id == "0") {
 			container.style.background = 'rgba(0,0,0,0)';
@@ -592,58 +594,22 @@ const initChalkboard = function (Reveal) {
 			container.style.opacity = 1;
 			container.style.visibility = 'visible';
 			container.style.pointerEvents = 'none';
-
-			var slides = document.querySelector('.slides');
-			var aspectRatio = Reveal.getConfig().width / Reveal.getConfig().height;
-			if (drawingCanvas[id].width > drawingCanvas[id].height * aspectRatio) {
-				drawingCanvas[id].xOffset = (drawingCanvas[id].width - drawingCanvas[id].height * aspectRatio) / 2 - revealDiv.offsetLeft;
-			} else if (drawingCanvas[id].height > drawingCanvas[id].width / aspectRatio) {
-				drawingCanvas[id].yOffset = (drawingCanvas[id].height - drawingCanvas[id].width / aspectRatio) / 2 - revealDiv.offsetTop;
-			}
+			container.style.position = 'absolute';
+			container.style.width = '100%';
+			container.style.height = '100%';
+			container.style.top = '0';
+			container.style.left = '0';
 
 			if (colorButtons) {
 				var palette = createPalette(boardmarkers, colorButtons,id);
-				palette.style.visibility = 'hidden'; // only show palette in drawing mode
+				palette.style.visibility = 'hidden';
 				palette.style.display = 'none';
-			//	container.appendChild(palette);
-			}
-		} else {
-			container.style.background = 'url("' + background[id] + '") repeat';
-			container.style.zIndex = 26;
-			container.style.opacity = 0;
-			container.style.visibility = 'hidden';
-
-			if (colorButtons) {
-				var palette = createPalette(chalks, colorButtons,id);
-			//	container.appendChild(palette);
-			palette.style.visibility='hidden'
-			palette.style.display='block'
-			}
-			if (boardHandle) {
-				var handle = document.createElement('div');
-				handle.classList.add('boardhandle');
-				handle.innerHTML = '<ul><li><a id="previousboard" href="#" title="Previous board"><i class="fas fa-chevron-up"></i></a></li><li><a id="nextboard" href="#" title="Next board"><i class="fas fa-chevron-down"></i></a></li></ul>';
-				handle.querySelector('#previousboard').addEventListener('click', function (e) {
-					e.preventDefault();
-					switchBoard(board - 1);
-				});
-				handle.querySelector('#nextboard').addEventListener('click', function (e) {
-					e.preventDefault();
-					switchBoard(board + 1);
-				});
-				handle.querySelector('#previousboard').addEventListener('touchstart', function (e) {
-					e.preventDefault();
-					switchBoard(board - 1);
-				});
-				handle.querySelector('#nextboard').addEventListener('touchstart', function (e) {
-					e.preventDefault();
-					switchBoard(board + 1);
-				});
-
-				container.appendChild(handle);
 			}
 		}
-
+		// ... rest of the function stays the same ...
+		
+		// Add container to slides instead of reveal
+		slides.appendChild(container);
 
 		var sponge = document.createElement('img');
 		sponge.src = "data:image/png;base64,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"
@@ -654,8 +620,7 @@ const initChalkboard = function (Reveal) {
 		drawingCanvas[id].sponge = sponge;
 
 		var canvas = document.createElement('canvas');
-		canvas.width = drawingCanvas[id].width;
-		canvas.height = drawingCanvas[id].height;
+
 		canvas.setAttribute('data-chalkboard', id);
 		//	canvas.style.cursor = pens[ id ][ color[ id ] ].cursor;
 		setPenOrEraserCursor(mode,color);
@@ -711,6 +676,7 @@ const initChalkboard = function (Reveal) {
 			for (var id = 0; id < data.length; id++) {
 				if (drawingCanvas[id].width != data[id].width || drawingCanvas[id].height != data[id].height) {
 					drawingCanvas[id].scale = Math.min(drawingCanvas[id].width / data[id].width, drawingCanvas[id].height / data[id].height);
+					drawingCanvas[id].scale = Reveal.getScale();
 					drawingCanvas[id].xOffset = (drawingCanvas[id].width - data[id].width * drawingCanvas[id].scale) / 2;
 					drawingCanvas[id].yOffset = (drawingCanvas[id].height - data[id].height * drawingCanvas[id].scale) / 2;
 				}
@@ -1034,7 +1000,7 @@ const initChalkboard = function (Reveal) {
 		var width = Reveal.getConfig().width;
 		var height = Reveal.getConfig().height;
 		var revealDiv = document.querySelector('.reveal');
-		var scale = 1;
+		//var scale = 1;
 		var xOffset = 0;
 		var yOffset = 0;
 		if (width != storage[1].width || height != storage[1].height) {
@@ -1143,10 +1109,10 @@ const initChalkboard = function (Reveal) {
 		// Enable line smoothing
 		context.shadowBlur = isHighlighter ? 0 : width / 4; // No shadow for highlighter
 		context.shadowColor = boardmarkers[colorIdx].color;
-		
+		scale = 1/Reveal.getScale();
 		context.beginPath();
-		context.moveTo(fromX, fromY);
-		context.lineTo(toX, toY);
+		context.moveTo(fromX * scale, fromY * scale);
+		context.lineTo(toX * scale, toY * scale);
 		context.stroke();
 		
 		// Reset composite operation if needed for non-highlighter operations
@@ -1491,6 +1457,7 @@ const initChalkboard = function (Reveal) {
 				var revealDiv = document.querySelector('.reveal');
 				for (var id = 0; id < 2; id++) {
 					drawingCanvas[id].scale = Math.min(drawingCanvas[id].width / storage[id].width, drawingCanvas[id].height / storage[id].height);
+					drawingCanvas[id].scale = 1;
 					drawingCanvas[id].xOffset = (drawingCanvas[id].width - storage[id].width * drawingCanvas[id].scale) / 2;
 					drawingCanvas[id].yOffset = (drawingCanvas[id].height - storage[id].height * drawingCanvas[id].scale) / 2;
 				}
@@ -1666,7 +1633,7 @@ const initChalkboard = function (Reveal) {
 		var scale = drawingCanvas[id].scale;
 		var xOffset = drawingCanvas[id].xOffset;
 		var yOffset = drawingCanvas[id].yOffset;
-		draw[id](ctx, xOffset + event.x1 * scale, yOffset + event.y1 * scale, xOffset + event.x2 * scale, yOffset + event.y2 * scale, event.color);
+		draw[id](ctx, xOffset + event.x1, yOffset + event.y1, xOffset + event.x2, yOffset + event.y2, event.color);
 	};
 
 	function eraseCircle(id, event, timestamp) {
@@ -1728,15 +1695,15 @@ const initChalkboard = function (Reveal) {
 		// Draw initial point
 		draw[mode](
 			ctx,
-			x * scale + xOffset,
-			y * scale + yOffset,
-			x * scale + xOffset,
-			y * scale + yOffset,
+			x + xOffset,
+			y + yOffset,
+			x + xOffset,
+			y + yOffset,
 			color[mode]
 		);
 		
-		lastX = x * scale + xOffset;
-		lastY = y * scale + yOffset;
+		lastX = x + xOffset;
+		lastY = y + yOffset;
 	}
 
 	function nonDrawSegment(xdiff) {
@@ -1777,10 +1744,10 @@ const initChalkboard = function (Reveal) {
 		) {
 			draw[mode](
 				ctx, 
-				fromX * scale + xOffset, 
-				fromY * scale + yOffset, 
-				toX * scale + xOffset, 
-				toY * scale + yOffset, 
+				fromX, 
+				fromY, 
+				toX, 
+				toY, 
 				colorIdx,
 				pressure
 			);
@@ -1814,88 +1781,24 @@ const initChalkboard = function (Reveal) {
 
 		// TODO: check all touchevents
 		canvas.addEventListener('touchstart', function (evt) {
-			if (evt.touches[0].touchType === 'stylus') {
-				evt.preventDefault();
-			}
-			//	console.log("Touch start");
+			evt.preventDefault();
 			if (!readOnly && evt.target.getAttribute('data-chalkboard') == mode) {
 				var scale = drawingCanvas[mode].scale;
-				var xOffset = drawingCanvas[mode].xOffset;
-				var yOffset = drawingCanvas[mode].yOffset;
-
+				var slides = document.querySelector('.slides');
+				var slidesRect = slides.getBoundingClientRect();
 				var touch = evt.touches[0];
-				mouseX = touch.pageX - revealDiv.offsetLeft;
-				mouseY = touch.pageY - revealDiv.offsetTop;
-				saveInitial(mouseX, mouseY);
+				
+				console.log('touch.clientY:', touch.clientY);
+				console.log('slidesRect.top:', slidesRect.top);
+				console.log('slides.offsetTop:', slides.offsetTop);
+				
+				mouseX = touch.clientX - slidesRect.left;
+				mouseY = touch.clientY - slidesRect.top;
+				
+				console.log('calculated mouseY:', mouseY);
+				
 				if (color[mode] == 10) {
-					startErasing((mouseX - xOffset) / scale, (mouseY - yOffset) / scale);
-				} else {
-				startDrawing((mouseX - xOffset) / scale, (mouseY - yOffset) / scale);
-				touchTimeout = setTimeout(startErasing, 1000, (mouseX - xOffset) / scale, (mouseY - yOffset) / scale);
-				}
-			}
-		}, passiveSupported ? {
-			passive: false
-		} : false);
-
-		canvas.addEventListener('touchmove', function (evt) {
-			if (evt.touches[0].touchType === 'stylus') {
-				evt.preventDefault();
-				//console.log("Touch move");
-				var touch = evt.touches[0];
-				if (((lastX - touch.pageX + revealDiv.offsetLeft) * (lastX - touch.pageX + revealDiv.offsetLeft) + (lastY - touch.pageY + revealDiv.offsetTop) * (lastY - touch.pageY + revealDiv.offsetTop)) > 0) {
-					clearTimeout(touchTimeout);
-					touchTimeout = null;
-				}
-				if (drawing || erasing) {
-					var scale = drawingCanvas[mode].scale;
-					var xOffset = drawingCanvas[mode].xOffset;
-					var yOffset = drawingCanvas[mode].yOffset;
-
-
-					mouseX = touch.pageX - revealDiv.offsetLeft;
-					mouseY = touch.pageY - revealDiv.offsetTop;
-					if (mouseY < drawingCanvas[mode].height && mouseX < drawingCanvas[mode].width) {
-						// move sponge
-						if (event.type == 'erase') {
-							drawingCanvas[mode].sponge.style.left = (mouseX - eraser.radius) + 'px';
-							drawingCanvas[mode].sponge.style.top = (mouseY - eraser.radius) + 'px';
-						}
-					}
-				}
-
-				if (drawing) {
-					// Get pressure from touch event for Apple Pencil
-					let pressure = touch.force || 1.0;
-					drawSegment(
-						(lastX - xOffset) / scale, 
-						(lastY - yOffset) / scale, 
-						(mouseX - xOffset) / scale, 
-						(mouseY - yOffset) / scale, 
-						color[mode],
-						pressure
-					);
-					// broadcast
-					var message = new CustomEvent(messageType);
-					message.content = {
-						sender: 'chalkboard-plugin',
-						type: 'draw',
-						timestamp: Date.now() - slideStart,
-						mode,
-						board,
-						fromX: (lastX - xOffset) / scale,
-						fromY: (lastY - yOffset) / scale,
-						toX: (mouseX - xOffset) / scale,
-						toY: (mouseY - yOffset) / scale,
-						color: color[mode],
-						pressure: pressure
-					};
-					document.dispatchEvent(message);
-
-					lastX = mouseX;
-					lastY = mouseY;
-				} else {
-					erasePoint((mouseX - xOffset) / scale, (mouseY - yOffset) / scale);
+					startErasing(mouseX, mouseY);
 					// broadcast
 					var message = new CustomEvent(messageType);
 					message.content = {
@@ -1904,24 +1807,51 @@ const initChalkboard = function (Reveal) {
 						timestamp: Date.now() - slideStart,
 						mode,
 						board,
-						x: (mouseX - xOffset) / scale,
-						y: (mouseY - yOffset) / scale
+						x: mouseX,
+						y: mouseY
 					};
 					document.dispatchEvent(message);
-
+				} else {
+					startDrawing(mouseX, mouseY);
 				}
-				nonDrawSegment(0);
-			} else {
+			}
+		});
+
+		canvas.addEventListener('touchmove', function (evt) {
+			evt.preventDefault();
+			if (drawing || erasing) {
+				var scale = drawingCanvas[mode].scale;
+				var slides = document.querySelector('.slides');
+				var slidesRect = slides.getBoundingClientRect();
 				var touch = evt.touches[0];
-				var xUp = touch.pageX - revealDiv.offsetTop;
-				var yUp = touch.pageY - revealDiv.offsetTop;
-				var xDiff = x_down - xUp;
-				var yDiff = y_down - yUp;
-				nonDrawSegment(xDiff);
-				//		console.log(xDiff)
-				//		console.log(yDiff)
-
-
+				mouseX = touch.clientX - slidesRect.left;
+				mouseY = touch.clientY - slidesRect.top;
+				if (drawing) {
+					drawSegment(
+						mouseX,
+						mouseY,
+						lastX,
+						lastY,
+						color[mode],
+						touch.force || 1.0
+					);
+					lastX = mouseX;
+					lastY = mouseY;
+				} else {
+					erasePoint(mouseX, mouseY);
+					// broadcast
+					var message = new CustomEvent(messageType);
+					message.content = {
+						sender: 'chalkboard-plugin',
+						type: 'erase',
+						timestamp: Date.now() - slideStart,
+						mode,
+						board,
+						x: mouseX,
+						y: mouseY
+					};
+					document.dispatchEvent(message);
+				}
 			}
 		}, false);
 
@@ -1954,14 +1884,14 @@ const initChalkboard = function (Reveal) {
 			if (!readOnly && evt.target.getAttribute('data-chalkboard') == mode) {
 				//console.log( "mousedown: " + evt.button );
 				var scale = drawingCanvas[mode].scale;
-				var xOffset = drawingCanvas[mode].xOffset;
-				var yOffset = drawingCanvas[mode].yOffset;
+				var slides = document.querySelector('.slides');
+				var slidesRect = slides.getBoundingClientRect();
 
-				mouseX = evt.pageX - revealDiv.offsetLeft;
-				mouseY = evt.pageY - revealDiv.offsetTop;
+				mouseX = evt.clientX - slidesRect.left;
+				mouseY = evt.clientY - slidesRect.top;
 				console.log(color[mode]);
 				if (evt.button == 2 || evt.button == 1 || evt.shiftKey|| (color[mode] == 10)) {
-					startErasing((mouseX - xOffset) / scale, (mouseY - yOffset) / scale);
+					startErasing(mouseX, mouseY);
 					// broadcast
 					var message = new CustomEvent(messageType);
 					message.content = {
@@ -1970,26 +1900,32 @@ const initChalkboard = function (Reveal) {
 						timestamp: Date.now() - slideStart,
 						mode,
 						board,
-						x: (mouseX - xOffset) / scale,
-						y: (mouseY - yOffset) / scale
+						x: mouseX,
+						y: mouseY
 					};
 					document.dispatchEvent(message);
 				} else {
-					startDrawing((mouseX - xOffset) / scale, (mouseY - yOffset) / scale);
+					startDrawing(mouseX, mouseY);
 				}
 			}
 		});
 
 		canvas.addEventListener('mousemove', function (evt) {
 			evt.preventDefault();
-			//console.log("Mouse move");
 			if (drawing || erasing) {
 				var scale = drawingCanvas[mode].scale;
-				var xOffset = drawingCanvas[mode].xOffset;
-				var yOffset = drawingCanvas[mode].yOffset;
+				var slides = document.querySelector('.slides');
+				var slidesRect = slides.getBoundingClientRect();
+				
+				console.log('evt.clientX:', evt.clientX);
+				console.log('slidesRect.left:', slidesRect.left);
+				console.log('slides offsetLeft:', slides.offsetLeft);
+				
+				mouseX = evt.clientX - slidesRect.left;
+				mouseY = evt.clientY - slidesRect.top;
 
-				mouseX = evt.pageX - revealDiv.offsetLeft;
-				mouseY = evt.pageY - revealDiv.offsetTop;
+				console.log('calculated mouseX:', mouseX);
+				console.log('scale:', scale);
 
 				if (drawing) {
 					// Use pressure and tilt for Apple Pencil
@@ -2001,17 +1937,17 @@ const initChalkboard = function (Reveal) {
 					}
 
 					drawSegment(
-						(lastX - xOffset) / scale,
-						(lastY - yOffset) / scale,
-						(mouseX - xOffset) / scale,
-						(mouseY - yOffset) / scale,
+						mouseX,
+						mouseY,
+						lastX,
+						lastY,
 						color[mode],
 						pressure
 					);
 					lastX = mouseX;
 					lastY = mouseY;
 				} else {
-					erasePoint((mouseX - xOffset) / scale, (mouseY - yOffset) / scale);
+					erasePoint(mouseX, mouseY);
 					// broadcast
 					var message = new CustomEvent(messageType);
 					message.content = {
@@ -2020,12 +1956,11 @@ const initChalkboard = function (Reveal) {
 						timestamp: Date.now() - slideStart,
 						mode,
 						board,
-						x: (mouseX - xOffset) / scale,
-						y: (mouseY - yOffset) / scale
+						x: mouseX,
+						y: mouseY
 					};
 					document.dispatchEvent(message);
 				}
-
 			}
 		});
 
@@ -2044,28 +1979,27 @@ const initChalkboard = function (Reveal) {
 	}
 
 	function resize() {
-		//console.log("resize");
-		// Resize the canvas and draw everything again
 		var timestamp = Date.now() - slideStart;
 		if (!playback) {
 			timestamp = getSlideDuration();
 		}
 
-		//console.log( drawingCanvas[0].scale + "/" + drawingCanvas[0].xOffset + "/" +drawingCanvas[0].yOffset );
+		var slides = document.querySelector('.slides');
+		var slideBounds = slides.getBoundingClientRect();
+		var scale = Reveal.getScale();
+
 		for (var id = 0; id < 2; id++) {
-			drawingCanvas[id].width = window.innerWidth;
-			drawingCanvas[id].height = window.innerHeight;
+			drawingCanvas[id].width = slideBounds.width / scale;
+			drawingCanvas[id].height = slideBounds.height / scale;
 			drawingCanvas[id].canvas.width = drawingCanvas[id].width;
 			drawingCanvas[id].canvas.height = drawingCanvas[id].height;
 			drawingCanvas[id].context.canvas.width = drawingCanvas[id].width;
 			drawingCanvas[id].context.canvas.height = drawingCanvas[id].height;
-
-			drawingCanvas[id].scale = Math.min(drawingCanvas[id].width / storage[id].width, drawingCanvas[id].height / storage[id].height);
-			drawingCanvas[id].xOffset = (drawingCanvas[id].width - storage[id].width * drawingCanvas[id].scale) / 2;
-			drawingCanvas[id].yOffset = (drawingCanvas[id].height - storage[id].height * drawingCanvas[id].scale) / 2;
-			//console.log( drawingCanvas[id].scale + "/" + drawingCanvas[id].xOffset + "/" +drawingCanvas[id].yOffset );
+			drawingCanvas[id].xOffset = 0;
+			drawingCanvas[id].yOffset = 0;
+			//drawingCanvas[id].scale = Math.min(drawingCanvas[id].width / storage[id].width, drawingCanvas[id].height / storage[id].height);
+			drawingCanvas[id].scale = scale;
 		}
-		//console.log( window.innerWidth + "/" + window.innerHeight);
 		startPlayback(timestamp, mode, true);
 	}
 
