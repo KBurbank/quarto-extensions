@@ -1,0 +1,16 @@
+name: framebreak
+author: Kendra Burbank
+version: 1.0.0
+contributes:
+  filters:
+    - framebreak.lua
+  formats:
+    beamer:
+      header-includes: |
+        \AtBeginDocument{
+          \let\oframe\frame
+          \renewcommand{\frame}[1][]{%
+            \oframe[allowframebreaks,#1]%
+          }
+        }
+        \setbeamertemplate{frametitle continuation}[from second] 

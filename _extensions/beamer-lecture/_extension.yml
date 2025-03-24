@@ -1,0 +1,24 @@
+title: lecture
+author: Kendra Burbank
+version: 1.0.0
+quarto-required: ">=1.2.0"
+contributes:
+  format:
+    beamer:
+      slide-level: 2
+      keep-tex: false
+      fontsize: 10pt
+      latex-clean: true
+      theme: "metropolis"
+      include-in-header: 
+          - text: \usepackage{fittedequation}
+          - text: \definecolor{maroon}{RGB}{128,0,0}
+          - text: \definecolor{blue}{RGB}{0,0,255}
+          - text: \definecolor{orange}{RGB}{255,165,0}
+          - text: \definecolor{mainblue}{RGB}{0,114,178}
+          - text: \definecolor{secondblue}{RGB}{0,158,215}
+          - text: \setbeamercolor{palette primary}{bg=mainblue,fg=white}
+          - text: \setbeamercolor{frametitle}{bg=secondblue,fg=white}
+          - text: \setbeamertemplate{frametitle continuation}[from second]
+      extensions:
+        - framebreak

@@ -1,0 +1,9 @@
+title: handouts
+author: Kendra Burbank
+version: 1.0.0
+quarto-required: ">=1.2.0"
+contributes:
+  format:
+    beamer:
+          handout: true
+          output-ext: handout.pdf
