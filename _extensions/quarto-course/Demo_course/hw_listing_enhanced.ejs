@@ -1,0 +1,86 @@
+```{=html}
+<table class="quarto-listing-table table">
+        <tr>
+            <th>Title</th>
+            <% for (const [key, value] of Object.entries(templateParams['field-display-names'])) { %>
+                <th>
+                    <%= value %>
+                </th>
+                <% } %>
+                    <th>Solutions</th>
+        </tr>
+        <ul>
+            <%  
+                // Helper function to parse relative dates like "Week 2 Friday"
+                function parseRelativeDate(relativeDate, quarterStartDate) {
+                    if (!relativeDate || !quarterStartDate) return null;
+                    
+                    // If it's already an absolute date (YYYY-MM-DD), use it
+                    if (/^\d{4}-\d{2}-\d{2}$/.test(relativeDate)) {
+                        return new Date(relativeDate);
+                    }
+                    
+                    // Parse relative date like "Week 2 Friday" or "Week 2"
+                    const match = relativeDate.match(/Week\s+(\d+)(?:\s+(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday))?/i);
+                    if (!match) return null;
+                    
+                    const weekNum = parseInt(match[1]);
+                    const dayName = match[2] || 'Friday'; // Default to Friday if no day specified
+                    
+                    const dayMap = {
+                        'Sunday': 0, 'Monday': 1, 'Tuesday': 2, 
+                        'Wednesday': 3, 'Thursday': 4, 'Friday': 5, 'Saturday': 6
+                    };
+                    const targetDay = dayMap[dayName];
+                    
+                    // Calculate date: quarterStart + (weekNum-1)*7 days, then adjust to target day
+                    const startDate = new Date(quarterStartDate);
+                    const startDay = startDate.getDay();
+                    
+                    // Days to add to get to start of target week
+                    let daysToAdd = (weekNum - 1) * 7;
+                    
+                    // Adjust to target day of week
+                    daysToAdd += (targetDay - startDay + 7) % 7;
+                    
+                    const resultDate = new Date(startDate);
+                    resultDate.setDate(resultDate.getDate() + daysToAdd);
+                    return resultDate;
+                }
+                
+                // Get quarter start date from templateParams
+                const quarterStartDate = templateParams['quarter-start-date'];
+                
+                for (const item of items) { %>
+    </a>            <tr <%=metadataAttrs(item) %>>
+                    <td>
+                        <a href="<%- item.path %>">
+                            <%= item.title %>
+                        </a>
+                    </td>
+
+                    <% for (const [key, value] of Object.entries(templateParams['field-display-names'])) { %>
+                        <td>
+                            <%= item[key] %>
+                        </td>
+                        <% } %>
+                            <% let split=item.path.split('.'); split.pop(); let finalName=split.join(".") + ".sol.html"; %>
+                           
+                            <% if(item['publish-solutions-on']) { 
+                                let publishDate = parseRelativeDate(item['publish-solutions-on'], quarterStartDate);
+                                // Fallback to direct date parsing if relative parsing fails
+                                if (!publishDate) {
+                                    publishDate = new Date(item['publish-solutions-on']);
+                                }
+                                if(publishDate && publishDate <= new Date()) { %>
+                                <td><a href="<%- finalName  %>">
+                                        <%= item.title + " Solutions" %>
+                                    </a></td>
+                            <% }  } %>
+
+                </tr>
+
+                <% } %>
+    </table>
+```
+
