@@ -9,8 +9,8 @@ for file in HW/*.qmd; do
     # Read the yaml content
     yaml_content=$(sed -n '/---/,/---/p' "$file")
 
-    # Extract the publish-solutions-on date
-    publish_date=$(echo "$yaml_content" | grep 'publish-solutions-on' | cut -d' ' -f2)
+    # Extract the publish-solutions-on-computed date (already absolute from Lua filter)
+    publish_date=$(echo "$yaml_content" | grep 'publish-solutions-on-computed' | cut -d' ' -f2)
     # Check if the publish_date is not empty
     if [[ -n $publish_date ]]; then
         # Convert the publish date to days since 1970-01-01

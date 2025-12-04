@@ -16,10 +16,12 @@ def doUpdate(repo):
     repo.git.add('.')
     changes = repo.index.diff(repo.head.commit)
     if changes:
-      print(repo.git.commit('-am', "automatically committed render output"))
-      print(repo.git.push())
+      repo.git.commit('-am', "automatically committed render output")
+      print(f"Committed to {repo.working_dir}")
+      repo.git.push()
+      print(f"Pushed to remote")
     else:
-      print("No changes to commit in path" + repo.working_dir)
+      print("No changes to commit in path: " + repo.working_dir)
 
 try:
   if config['custom']['do_git']:

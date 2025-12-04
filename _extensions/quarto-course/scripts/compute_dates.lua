@@ -107,24 +107,17 @@ end
 local computed_dates_meta = {}
 
 function Meta(meta)
-    io.stderr:write("[compute_dates.lua] Meta function called\n")
-    
     -- Get quarter start date from document metadata
     local quarter_start = nil
     if meta['quarter-start-date'] then
         quarter_start = pandoc.utils.stringify(meta['quarter-start-date'])
-        io.stderr:write("[compute_dates.lua] Found quarter-start-date: " .. quarter_start .. "\n")
-    else
-        io.stderr:write("[compute_dates.lua] WARNING: No quarter-start-date found\n")
     end
     
     -- Process due-date
     if meta['due-date'] then
         local due_str = pandoc.utils.stringify(meta['due-date'])
-        io.stderr:write("[compute_dates.lua] Processing due-date: " .. due_str .. "\n")
         local computed_due = parse_due_date(due_str, quarter_start)
         if computed_due then
-            io.stderr:write("[compute_dates.lua] Computed due-date: " .. computed_due .. "\n")
             -- Store both original and computed
             meta['due-date-original'] = meta['due-date']
             meta['due-date-computed'] = pandoc.Str(computed_due)
@@ -135,11 +128,9 @@ function Meta(meta)
     -- Process publish-solutions-on
     if meta['publish-solutions-on'] then
         local publish_str = pandoc.utils.stringify(meta['publish-solutions-on'])
-        io.stderr:write("[compute_dates.lua] Processing publish-solutions-on: " .. publish_str .. "\n")
         local due_date = meta['due-date-computed'] and pandoc.utils.stringify(meta['due-date-computed']) or nil
         local computed_publish = parse_publish_date(publish_str, quarter_start, due_date)
         if computed_publish then
-            io.stderr:write("[compute_dates.lua] Computed publish-solutions-on: " .. computed_publish .. "\n")
             -- Store computed value separately, preserve original
             meta['publish-solutions-on-computed'] = pandoc.Str(computed_publish)
             computed_dates_meta['publish-solutions-on-computed'] = computed_publish
@@ -151,9 +142,7 @@ end
 
 -- Inject computed dates into HTML as a script tag
 function Pandoc(doc)
-    io.stderr:write("[compute_dates.lua] Pandoc function called, FORMAT=" .. (FORMAT or "unknown") .. "\n")
     if FORMAT:match('html') and next(computed_dates_meta) then
-        io.stderr:write("[compute_dates.lua] Injecting computed dates into HTML\n")
         -- Create JSON string
         local json_parts = {}
         for k, v in pairs(computed_dates_meta) do
