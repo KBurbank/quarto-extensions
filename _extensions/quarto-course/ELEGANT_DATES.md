@@ -33,13 +33,13 @@ publish-solutions-on: +2w  # This HW gets 2 weeks
 
 The `compute_dates.lua` filter runs during render and:
 - Reads `quarter-start-date` from project metadata
-- Parses `due-date` (e.g., "Wednesday, Week 2") → absolute date
+- Parses `due-date` (e.g., "Wednesday, Week 2") → `due-date-computed`
 - Parses `publish-solutions-on` with multiple formats:
   - Relative offset: `+1w`, `+2d`, `-3d` (from due-date)
   - Absolute week: `Week 3 Friday`
   - Absolute date: `2025-02-14`
-- Stores computed absolute dates in metadata
-- Original values preserved as `*-original` fields
+- Stores computed values as `*-computed` fields
+- **Original values unchanged** - source files stay clean!
 
 ### 3. **Scripts Read Computed Values** (Simple!)
 
@@ -48,7 +48,8 @@ Templates and scripts just read the absolute dates - no parsing needed!
 **Template (hw_listing_simple.ejs):**
 ```javascript
 // Just compare dates - Lua already computed them!
-if(item['publish-solutions-on'] && new Date(item['publish-solutions-on']) <= new Date()) {
+if(item['publish-solutions-on-computed'] && 
+   new Date(item['publish-solutions-on-computed']) <= new Date()) {
     // Show solution link
 }
 ```
@@ -56,7 +57,7 @@ if(item['publish-solutions-on'] && new Date(item['publish-solutions-on']) <= new
 **Bash Script (remove_not_ready_simple.sh):**
 ```bash
 # Just read and compare - Lua already computed them!
-publish_date=$(grep 'publish-solutions-on:' "$file" | sed 's/.*: //')
+publish_date=$(grep 'publish-solutions-on-computed:' "$file" | sed 's/.*: //')
 ```
 
 ## Supported Date Formats
@@ -132,14 +133,14 @@ due-date: Wednesday, Week 2
 title: Homework 1
 due-date: Wednesday, Week 2
 due-date-computed: 2025-01-15
-publish-solutions-on: 2025-01-22  # +1w from computed due date
-publish-solutions-on-original: +1w
+publish-solutions-on: +1w  # Original preserved!
+publish-solutions-on-computed: 2025-01-22  # Computed value
 ---
 ```
 
 ### Scripts Read:
 - `due-date-computed: 2025-01-15`
-- `publish-solutions-on: 2025-01-22`
+- `publish-solutions-on-computed: 2025-01-22`
 
 Done! No parsing, just comparison.
 

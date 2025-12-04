@@ -122,11 +122,8 @@ function Meta(meta)
         local due_date = meta['due-date-computed'] and pandoc.utils.stringify(meta['due-date-computed']) or nil
         local computed_publish = parse_publish_date(publish_str, quarter_start, due_date)
         if computed_publish then
-            -- Store both original and computed
-            meta['publish-solutions-on-original'] = meta['publish-solutions-on']
+            -- Store computed value separately, preserve original
             meta['publish-solutions-on-computed'] = pandoc.Str(computed_publish)
-            -- Also update the main field so scripts can read it
-            meta['publish-solutions-on'] = pandoc.Str(computed_publish)
         end
     end
     

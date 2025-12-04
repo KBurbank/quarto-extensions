@@ -15,8 +15,8 @@ for file in HW/*.qmd; do
     # Read the yaml content
     yaml_content=$(sed -n '/---/,/---/p' "$file")
 
-    # Extract the publish-solutions-on date (already absolute from Lua filter)
-    publish_date=$(echo "$yaml_content" | grep 'publish-solutions-on:' | sed 's/publish-solutions-on:[[:space:]]*//')
+    # Extract the publish-solutions-on-computed date (absolute from Lua filter)
+    publish_date=$(echo "$yaml_content" | grep 'publish-solutions-on-computed:' | sed 's/publish-solutions-on-computed:[[:space:]]*//')
     
     # Check if publish_date is not empty
     if [[ -n $publish_date ]]; then

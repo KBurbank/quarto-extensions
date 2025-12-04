@@ -27,8 +27,8 @@
                         <% } %>
                             <% let split=item.path.split('.'); split.pop(); let finalName=split.join(".") + ".sol.html"; %>
                            
-                            <% // publish-solutions-on is already an absolute date from Lua filter
-                               if(item['publish-solutions-on'] && new Date(item['publish-solutions-on']) <= new Date()) { %>
+                            <% // publish-solutions-on-computed is the absolute date from Lua filter
+                               if(item['publish-solutions-on-computed'] && new Date(item['publish-solutions-on-computed']) <= new Date()) { %>
                                 <td><a href="<%- finalName  %>">
                                         <%= item.title + " Solutions" %>
                                     </a></td>
