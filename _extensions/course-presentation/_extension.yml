@@ -5,6 +5,7 @@ quarto-required: ">=1.2.0"
 contributes:
   format:
       revealjs:
+          html-math-method: mathjax
           embedded: true
           toc: true
           toc-depth: 1

@@ -97,16 +97,21 @@ if quarto.doc.is_format('revealjs') then
     elseif not meta['sub-title'] then
       grid_no_htext()
     end
-    local header_text = meta['header'] and str(meta['header']) or " "
+    
+    -- Create header content, preserving math elements
+    local header_content = meta['header'] and meta['header'] or pandoc.Str(" ")
     local header_para_class = {class = "header-text"}
+    
     if meta['title-as-header'] then
-      header_text = meta['title']
+      header_content = meta['title']
       header_para_class = {class = "header-text title-text"}
     end
+    
     if meta['subtitle-as-header'] then
-      header_text = meta['subtitle']
+      header_content = meta['subtitle']
       header_para_class = {class = "header-text title-text"}
     end
+    
     -- make divs structure for holding text and logo.
     local header_logo = meta['header-logo'] and str(meta['header-logo']) or ""
     local header_logo_link = meta['header-logo-link'] and str(meta['header-logo-link']) or ""
@@ -120,14 +125,15 @@ if quarto.doc.is_format('revealjs') then
     if footer_logo_link ~= "" then
       header_img.attributes['footer-logo-link'] = footer_logo_link
     end
-   -- if meta['sub_title'] then
+    
     local header_subsection = pandoc.Div(pandoc.Para(" "), {class = "sub-title", id="reveal-subheader"})
-    -- else
-     local footer_text = pandoc.Div(pandoc.Para(" "), {class = "footer-section"}) 
-   --b end
+    local footer_text = pandoc.Div(pandoc.Para(" "), {class = "footer-section"}) 
     local header_section = pandoc.Div(pandoc.Para(" "), {class = "sc-title"})
     local header_sbsection = pandoc.Div(pandoc.Para(" "), {class = "sb-title"})
-    local header_para = pandoc.Div(pandoc.Para(header_text), header_para_class)
+    
+    -- Create header paragraph preserving the original Pandoc elements
+    local header_para = pandoc.Div(pandoc.Para(header_content), header_para_class)
+    
     if meta['hide-from-titleSlide'] then
       local hide = str(meta['hide-from-titleSlide'])
       if hide == "text" then

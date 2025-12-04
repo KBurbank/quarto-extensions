@@ -14,8 +14,8 @@ function add_sub_title() {
 
         Reveal.getSlides().forEach(el => {
             //  if (!el.matches('#title-slide')) {
-            var h1 = el.querySelector('h1')?.innerText;
-            var h2 = el.querySelector('h2')?.innerText;
+            var h1 = el.querySelector('h1')?.innerHTML;
+            var h2 = el.querySelector('h2')?.innerHTML;
             h1_arr.push(h1);
             h2_arr.push(h2);
             //    };
@@ -65,11 +65,11 @@ function add_sub_title() {
                 // handling h1 section title (`.sc-title`)
                 var section_text = event.currentSlide.getAttribute('data-sc-title') || " ";
                 if (event.currentSlide.matches('.title-slide.level1')) {
-                    footer.querySelector('p').innerText = "";
+                    footer.querySelector('p').innerHTML = "";
                     // } else if (event.currentSlide.matches('.title-slide.level2')) {
-                    //    header.querySelector('.sc-title p').innerText = section_text;  
+                    //    header.querySelector('.sc-title p').innerHTML = section_text;  
                 } else {
-                    footer.querySelector('p').innerText = section_text;
+                    footer.querySelector('p').innerHTML = section_text;
                 };
                 
 
@@ -77,12 +77,12 @@ function add_sub_title() {
                 var sbsection_text = event.currentSlide.getAttribute('data-sb-title') || " ";
                 if (event.currentSlide.matches('.title-slide.level1')) {
                     header.style.display="none";
-                    header.querySelector('.sub-title p').innerText = "";
+                    header.querySelector('.sub-title p').innerHTML = "";
                     //    } else if (event.currentSlide.matches('.title-slide.level2')) {
-                    //      header.querySelector('.sb-title p').innerText = "";
+                    //      header.querySelector('.sb-title p').innerHTML = "";
                 } else {
                     header.style.display="grid";
-                    header.querySelector('.sub-title p').innerText = sbsection_text;
+                    header.querySelector('.sub-title p').innerHTML = sbsection_text;
                 };
             };
         });

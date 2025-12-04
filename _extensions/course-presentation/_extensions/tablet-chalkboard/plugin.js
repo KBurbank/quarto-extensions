@@ -105,63 +105,63 @@ const initChalkboard = function (Reveal) {
 	};
 	var boardmarkers = [
 		{
-			color: 'rgba(220,20,60,1)',
-			cursor: ""
+			color: 'rgba(100,100,100,1)',
+			cursor: 'url(' + path + 'img/boardmarker-black.png), auto'
 		},
 		{
-		color: 'rgba(100,100,100,1)',
-		cursor: ""
-	},
-	{
-		color: 'rgba(30,144,255, 1)',
-		cursor: ""
-	},
-	
-	{
-		color: 'rgba(50,205,50,1)',
-		cursor: ""
-	},
-	{
-		color: 'rgba(255,140,0,1)',
-		cursor: ""
-	},
-	{
-		color: 'rgba(150,0,20150,1)',
-		cursor: ""
-	},
-	{
-		color: 'rgba(255,220,0,1)',
-		cursor: ""
-	}
+			color: 'rgba(30,144,255, 1)',
+			cursor: 'url(' + path + 'img/boardmarker-blue.png), auto'
+		},
+		{
+			color: 'rgba(220,20,60,1)',
+			cursor: 'url(' + path + 'img/boardmarker-red.png), auto'
+		},
+		{
+			color: 'rgba(50,205,50,1)',
+			cursor: 'url(' + path + 'img/boardmarker-green.png), auto'
+		},
+		{
+			color: 'rgba(255,140,0,1)',
+			cursor: 'url(' + path + 'img/boardmarker-orange.png), auto'
+		},
+		{
+			color: 'rgba(150,0,20150,1)',
+			cursor: 'url(' + path + 'img/boardmarker-purple.png), auto'
+		},
+		{
+			color: 'rgba(255,220,0,1)',
+			cursor: 'url(' + path + 'img/boardmarker-yellow.png), auto'
+		}
 	];
-	var chalks = [{
-		color: 'rgba(255,255,255,0.5)',
-		cursor: ""
-	},
-	{
-		color: 'rgba(96, 154, 244, 0.5)',
-		cursor: ""
-	},
-	{
-		color: 'rgba(237, 20, 28, 0.5)',
-		cursor: ""
-	},
-	{
-		color: 'rgba(20, 237, 28, 0.5)',
-		cursor: ""
-	},
-	{
-		color: 'rgba(220, 133, 41, 0.5)',
-		cursor: ""
-	},
-	{
-		color: 'rgba(220,0,220,0.5)',
-		cursor: ""
-	},
-	{
-		color: 'rgba(255,220,0,0.5)',
-		cursor: ""
-	}
+	var chalks = [
+		{
+			color: 'rgba(255,255,255,0.5)',
+			cursor: 'url(' + path + 'img/chalk-white.png), auto'
+		},
+		{
+			color: 'rgba(96, 154, 244, 0.5)',
+			cursor: 'url(' + path + 'img/chalk-blue.png), auto'
+		},
+		{
+			color: 'rgba(237, 20, 28, 0.5)',
+			cursor: 'url(' + path + 'img/chalk-red.png), auto'
+		},
+		{
+			color: 'rgba(20, 237, 28, 0.5)',
+			cursor: 'url(' + path + 'img/chalk-green.png), auto'
+		},
+		{
+			color: 'rgba(220, 133, 41, 0.5)',
+			cursor: 'url(' + path + 'img/chalk-orange.png), auto'
+		},
+		{
+			color: 'rgba(220,0,220,0.5)',
+			cursor: 'url(' + path + 'img/chalk-purple.png), auto'
+		},
+		{
+			color: 'rgba(255,220,0,0.5)',
+			cursor: 'url(' + path + 'img/chalk-yellow.png), auto'
+		}
 	];
 	var keyBindings = {
 		toggleNotesCanvas: {
@@ -242,7 +242,7 @@ const initChalkboard = function (Reveal) {
 		switch (theme) {
 			case 'whiteboard':
 				background = ['rgba(127,127,127,.1)', "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAAAAACo4kLRAAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfoAwYXDx9H8bKMAAAAAW9yTlQBz6J3mgAAAKdJREFUGNNNUAEOxDAI8v+fvFXUfeNAbTKztI6ioJYRWcVDgQhkpREkEAqdAC9jUlVkeYLRDGtKVriAZmNAvR7AfyKGd0/1OmC7/DCVe5+C8hXY6eM5LXl5g9R5IAciqhyt81Km3comy1P1BRwxr0+M4mWFxowNjT46A2Ipw6Vsq2voE/w2bAbi0mhrF7blUCFmgcAy12I/cuMWrt+SLq4Ru/k1y875B3BlZGnSP0QAAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDI0LTAzLTA2VDIzOjE1OjE0KzAwOjAw4xyC1QAAACV0RVh0ZGF0ZTptb2RpZnkAMjAyNC0wMy0wNlQyMzoxNToxNCswMDowMJJBOmkAAAAodEVYdGRhdGU6dGltZXN0YW1wADIwMjQtMDMtMDZUMjM6MTU6MzErMDA6MDDVSTNsAAAAAElFTkSuQmCC"];
-				draw = [drawWithBoardmarker, drawWithBoardmarker];
+				draw = [drawWithBoardmarker, drawWithChalk];
 				pens = [boardmarkers, boardmarkers];
 				grid = {
 					color: 'rgb(127,127,255,0.1)',
@@ -388,11 +388,15 @@ const initChalkboard = function (Reveal) {
 	var updateStorageTimeout = null;
 	var playback = false;
 
+	// Replace segment counter with timestamp tracking
+	var strokeStartTime = 0;
+	var MAX_MS_FOR_ERASER = 20; // Allow eraser mode within 20ms of starting a stroke
+
 	function createPalette(colors, length,id) {
 		var revealFooter = document.querySelector('.reveal-footer')
 
 		if (!revealFooter) {
-			revealFooter = revealDiv;
+				revealFooter = revealDiv;
 		}
 		if (length === true || length > colors.length) {
 			length = colors.length;
@@ -1458,6 +1462,12 @@ const initChalkboard = function (Reveal) {
 	};
 
 	function startErasing(x, y) {
+        // Only switch to eraser mode if we're within the time window after starting a stroke
+        var currentTime = Date.now();
+        // Allow activation within MAX_MS_FOR_ERASER + hold time (1000ms)
+        if (currentTime - strokeStartTime > MAX_MS_FOR_ERASER + 1000) {
+            return;
+        }
 		drawing = false;
 		erasing = true;
 		drawingCanvas[mode].sponge.style.visibility = 'visible';
@@ -1569,6 +1579,9 @@ const initChalkboard = function (Reveal) {
 				var xOffset = drawingCanvas[mode].xOffset;
 				var yOffset = drawingCanvas[mode].yOffset;
 
+				// Record the time when the stroke begins
+				strokeStartTime = Date.now();
+
 				var touch = evt.touches[0];
 				mouseX = touch.pageX - revealDiv.offsetLeft;
 				mouseY = touch.pageY - revealDiv.offsetTop;
@@ -1634,10 +1647,10 @@ const initChalkboard = function (Reveal) {
 						sender: 'chalkboard-plugin',
 						type: 'erase',
 						timestamp: Date.now() - slideStart,
-						mode,
-						board,
-						x: (mouseX - xOffset) / scale,
-						y: (mouseY - yOffset) / scale
+							mode,
+							board,
+							x: (mouseX - xOffset) / scale,
+							y: (mouseY - yOffset) / scale
 					};
 					document.dispatchEvent(message);
 
@@ -1700,10 +1713,10 @@ const initChalkboard = function (Reveal) {
 						sender: 'chalkboard-plugin',
 						type: 'erase',
 						timestamp: Date.now() - slideStart,
-						mode,
-						board,
-						x: (mouseX - xOffset) / scale,
-						y: (mouseY - yOffset) / scale
+							mode,
+							board,
+							x: (mouseX - xOffset) / scale,
+							y: (mouseY - yOffset) / scale
 					};
 					document.dispatchEvent(message);
 				} else {
@@ -1731,13 +1744,13 @@ const initChalkboard = function (Reveal) {
 						sender: 'chalkboard-plugin',
 						type: 'draw',
 						timestamp: Date.now() - slideStart,
-						mode,
-						board,
-						fromX: (lastX - xOffset) / scale,
-						fromY: (lastY - yOffset) / scale,
-						toX: (mouseX - xOffset) / scale,
-						toY: (mouseY - yOffset) / scale,
-						color: color[mode]
+							mode,
+							board,
+							fromX: (lastX - xOffset) / scale,
+							fromY: (lastY - yOffset) / scale,
+							toX: (mouseX - xOffset) / scale,
+							toY: (mouseY - yOffset) / scale,
+							color: color[mode]
 					};
 					document.dispatchEvent(message);
 
@@ -1751,10 +1764,10 @@ const initChalkboard = function (Reveal) {
 						sender: 'chalkboard-plugin',
 						type: 'erase',
 						timestamp: Date.now() - slideStart,
-						mode,
-						board,
-						x: (mouseX - xOffset) / scale,
-						y: (mouseY - yOffset) / scale
+							mode,
+							board,
+							x: (mouseX - xOffset) / scale,
+							y: (mouseY - yOffset) / scale
 					};
 					document.dispatchEvent(message);
 				}

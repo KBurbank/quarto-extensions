@@ -1,2 +1,4 @@
 _extensions/pyodide_code
 _extensions/pyodide_code
+
+/.luarc.json
