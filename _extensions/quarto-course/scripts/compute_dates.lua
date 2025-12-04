@@ -23,9 +23,15 @@ local function parse_due_date(due_date_str, quarter_start)
     end
     
     -- Parse "Wednesday, Week 2" or "Week 2" format
-    local week_num, day_name = due_date_str:match("Week%s+(%d+)%s*,?%s*(%a*)")
+    -- Try "DayName, Week N" first (common format)
+    local day_name, week_num = due_date_str:match("(%a+),%s*Week%s+(%d+)")
+    -- If that fails, try "Week N DayName" format
     if not week_num then
-        day_name, week_num = due_date_str:match("(%a+),%s*Week%s+(%d+)")
+        week_num, day_name = due_date_str:match("Week%s+(%d+)%s+(%a+)")
+    end
+    -- If still no match, try just "Week N" (will default to Friday)
+    if not week_num then
+        week_num = due_date_str:match("Week%s+(%d+)")
     end
     
     if not week_num then return nil end
@@ -98,39 +104,77 @@ local function parse_publish_date(publish_str, quarter_start, due_date)
     return parse_due_date(publish_str, quarter_start)
 end
 
+local computed_dates_meta = {}
+
 function Meta(meta)
+    io.stderr:write("[compute_dates.lua] Meta function called\n")
+    
     -- Get quarter start date from document metadata
     local quarter_start = nil
     if meta['quarter-start-date'] then
         quarter_start = pandoc.utils.stringify(meta['quarter-start-date'])
+        io.stderr:write("[compute_dates.lua] Found quarter-start-date: " .. quarter_start .. "\n")
+    else
+        io.stderr:write("[compute_dates.lua] WARNING: No quarter-start-date found\n")
     end
     
     -- Process due-date
     if meta['due-date'] then
         local due_str = pandoc.utils.stringify(meta['due-date'])
+        io.stderr:write("[compute_dates.lua] Processing due-date: " .. due_str .. "\n")
         local computed_due = parse_due_date(due_str, quarter_start)
         if computed_due then
+            io.stderr:write("[compute_dates.lua] Computed due-date: " .. computed_due .. "\n")
             -- Store both original and computed
             meta['due-date-original'] = meta['due-date']
             meta['due-date-computed'] = pandoc.Str(computed_due)
+            computed_dates_meta['due-date-computed'] = computed_due
         end
     end
     
     -- Process publish-solutions-on
     if meta['publish-solutions-on'] then
         local publish_str = pandoc.utils.stringify(meta['publish-solutions-on'])
+        io.stderr:write("[compute_dates.lua] Processing publish-solutions-on: " .. publish_str .. "\n")
         local due_date = meta['due-date-computed'] and pandoc.utils.stringify(meta['due-date-computed']) or nil
         local computed_publish = parse_publish_date(publish_str, quarter_start, due_date)
         if computed_publish then
+            io.stderr:write("[compute_dates.lua] Computed publish-solutions-on: " .. computed_publish .. "\n")
             -- Store computed value separately, preserve original
             meta['publish-solutions-on-computed'] = pandoc.Str(computed_publish)
+            computed_dates_meta['publish-solutions-on-computed'] = computed_publish
         end
     end
     
     return meta
 end
 
+-- Inject computed dates into HTML as a script tag
+function Pandoc(doc)
+    io.stderr:write("[compute_dates.lua] Pandoc function called, FORMAT=" .. (FORMAT or "unknown") .. "\n")
+    if FORMAT:match('html') and next(computed_dates_meta) then
+        io.stderr:write("[compute_dates.lua] Injecting computed dates into HTML\n")
+        -- Create JSON string
+        local json_parts = {}
+        for k, v in pairs(computed_dates_meta) do
+            table.insert(json_parts, string.format('"%s": "%s"', k, v))
+        end
+        local json_str = "{" .. table.concat(json_parts, ", ") .. "}"
+        
+        -- Create script tag with metadata
+        local script = pandoc.RawBlock('html', 
+            '<script id="quarto-computed-dates" type="application/json">\n' ..
+            json_str ..
+            '\n</script>')
+        
+        -- Insert at beginning of body
+        table.insert(doc.blocks, 1, script)
+    end
+    return doc
+end
+
 return {
-    { Meta = Meta }
+    { Meta = Meta },
+    { Pandoc = Pandoc }
 }
 
