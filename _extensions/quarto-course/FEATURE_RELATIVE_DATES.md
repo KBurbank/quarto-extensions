@@ -6,25 +6,32 @@ Enhanced the `hw_listing.ejs` template to support **relative dates** based on a 
 
 ## Usage
 
-### 1. Set Quarter Start Date in `index.qmd`
+### 1. Set Quarter Start Date as Project Metadata
 
+**Option A: In `_quarto.yml` (Recommended)**
+```yaml
+project:
+  title: "Stat 24320"
+  type: quarto-course
+
+quarter-start-date: "2025-01-06"  # Monday of Week 1
+
+website:
+  title: "Stat 24320"
+```
+
+**Option B: In `_metadata.yml`**
+```yaml
+quarter-start-date: "2025-01-06"  # Monday of Week 1
+```
+
+**Option C: In `index.qmd` (Fallback)**
 ```yaml
 ---
-title: "Stat 24320"
-format: html
 listing: 
   - id: homeworks
-    template: "hw_listing.ejs"
-    contents: 
-      - "HW"
-    include:
-      publish: true
     template-params:
-      quarter-start-date: "2025-01-06"  # Monday of Week 1
-      fields: [title, textbook-chapters, due-date]
-      field-display-names:
-        due-date: "Due Date"
-        textbook-chapters: "Textbook Chapters"
+      quarter-start-date: "2025-01-06"
 ---
 ```
 
@@ -90,15 +97,23 @@ The parsing logic handles:
 
 ### Before (Spring 2024):
 ```yaml
-publish-solutions-on: 2024-02-23  # Week 2 Friday
+# _quarto.yml
+quarter-start-date: "2024-01-08"
+
+# HW/HW1.qmd
+publish-solutions-on: 2024-02-23  # Hardcoded for Spring 2024
 ```
 
 ### After (Winter 2025):
 ```yaml
+# _quarto.yml
+quarter-start-date: "2025-01-06"  # Just change this!
+
+# HW/HW1.qmd
 publish-solutions-on: Week 2 Friday  # Automatically calculated!
 ```
 
-Just update `quarter-start-date: "2025-01-06"` and all homework solution dates adjust automatically!
+Update one date in `_quarto.yml` and all homework solution dates adjust automatically!
 
 ## Installation
 
@@ -121,20 +136,27 @@ Update the extension source files:
 
 ### For Your Course
 
-1. **Add `quarter-start-date` to `index.qmd`:**
+1. **Add `quarter-start-date` to `_quarto.yml`:**
    ```yaml
-   template-params:
-     quarter-start-date: "2025-01-06"
+   quarter-start-date: "2025-01-06"  # Monday of Week 1
    ```
 
 2. **Update homework files to use relative dates:**
    ```yaml
+   # HW/HW1.qmd
    publish-solutions-on: Week 2 Friday
    ```
 
 3. **Test the bash script:**
    ```bash
    bash _extensions/quarto-course/scripts/remove_not_ready.sh
+   ```
+   
+   You should see output like:
+   ```
+   Quarter start date: 2025-01-06
+     HW1: publish date = 2025-01-17 (from: Week 2 Friday)
+     → Keeping docs/HW/HW1.sol.html (published)
    ```
 
 ## Benefits

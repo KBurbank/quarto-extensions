@@ -48,8 +48,8 @@
                     return resultDate;
                 }
                 
-                // Get quarter start date from templateParams
-                const quarterStartDate = templateParams['quarter-start-date'];
+                // Get quarter start date from project metadata or templateParams (fallback)
+                const quarterStartDate = metadata['quarter-start-date'] || templateParams['quarter-start-date'];
                 
                 for (const item of items) { %>
     </a>            <tr <%=metadataAttrs(item) %>>
